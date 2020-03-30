@@ -1,16 +1,16 @@
 # Face-Recognition
 
 ## Requirements
-numpy
-tensorflow>=1.12.1
-opencv-python
-opencv-contrib-python
-keras
-matplotlib
-pillow
-face-recognition
-dlib
-Django
+-numpy
+-tensorflow>=1.12.1
+-opencv-python
+-opencv-contrib-python
+-keras
+-matplotlib
+-pillow
+-face-recognition
+-dlib
+-Django
 
 ## Pre-requisites
 
