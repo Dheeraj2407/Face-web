@@ -10,7 +10,7 @@ matplotlib
 pillow
 face-recognition
 dlib
-Webcam
+Django
 
 ## Pre-requisites
 
@@ -21,3 +21,8 @@ Else you can download the weights by this link
 https://docs.google.com/uc?export=download&id=13gFDLFhhBqwMw6gf8jVUvNDH2UrgCCrX
 
 and place the extracted weights file in "model-weights" folder.
+
+## Execution
+
+To execute the project change directory to "faceweb" and execute this command
+"python manage.py runserver"
