@@ -1,5 +1,19 @@
 # Face-Recognition
 
+## Requirements
+numpy
+tensorflow>=1.12.1
+opencv-python
+opencv-contrib-python
+keras
+matplotlib
+pillow
+face-recognition
+dlib
+Webcam
+
+## Pre-requisites
+
 If you use Linux then you can download the weights by executing the script provided in model-weights.
 
 Else you can download the weights by this link
