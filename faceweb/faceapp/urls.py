@@ -1,6 +1,6 @@
 """Defines URL pattern for faceapp"""
 
-from django.urls import path
+from django.urls import path,include
 from . import views
 
 app_name = 'faceapp'
@@ -10,4 +10,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     # Register page
     path('register/', views.register, name='register'),
+    path('login/',include('django.contrib.auth.urls'),name='login'),
 ]

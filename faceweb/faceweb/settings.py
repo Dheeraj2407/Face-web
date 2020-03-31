@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # My apps
     'faceapp',
+    # Third party apps
+    'bootstrap4',
     # Default Django apps
     'django.contrib.admin',
     'django.contrib.auth',

@@ -25,3 +25,4 @@ def register(request):
 
 def index(request):
     return render(request, 'registration/index.html')
+
