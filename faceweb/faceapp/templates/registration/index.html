@@ -1,9 +1,11 @@
 {% extends "registration/base.html" %}
 {% block page_header %}
+    {% if not user.is_authenticated %}
     <div class="jumbotron">
-        <h1 class="display-3">Track your learning.</h1>
-        <p class="lead">Make your own Learning Log, and keep a list of thetopics you're learning about. Whenever you learn something new about a topic, make an entry summarizing what you've learned.</p>
+        <h1 class="display-3">Use your face for marking your presence.</h1>
+        <p class="lead">Make attendance marking simple by using face recognition. Upload your current photo through device camera and just mark your presence.</p>
         <a class="btn btn-lg btn-primary" href="{% url 'faceapp:register' %}" role="button">Register &raquo;</a>
     </div>
+    {% endif %}
 {% endblock page_header %}
 
