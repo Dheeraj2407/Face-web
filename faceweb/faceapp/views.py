@@ -19,10 +19,13 @@ def register(request):
             login(request, new_user)
             return redirect('faceapp:index')
     # Display a blank or invalid form
-    context = {'form':form}
-    return render(request,'registration/register.html',context)
+    context = {'form': form}
+    return render(request, 'registration/register.html', context)
 
 
 def index(request):
     return render(request, 'registration/index.html')
 
+
+def test(request):
+    return render(request, 'registration/test.html')
