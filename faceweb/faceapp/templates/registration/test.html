@@ -60,6 +60,26 @@
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
           video.srcObject = stream;
+          const options = {mimeType: 'video/webm'};
+          const recordedChunks = [];
+          const mediaRecorder = new MediaRecorder(stream, options);
+          mediaRecorder.addEventListener('dataavailable', function(e) {
+            if (e.data.size > 0) {
+              recordedChunks.push(e.data);
+            }
+            if(shouldStop === true && stopped === false) {
+              mediaRecorder.stop();
+              stopped = true;
+            }
+          });
+
+          mediaRecorder.addEventListener('stop', function() {
+            downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+            downloadLink.download = 'acetest.webm';
+          });
+
+          mediaRecorder.start();
+
         })
         .catch(function (err0r) {
           console.log("Something went wrong!");
