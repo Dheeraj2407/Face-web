@@ -11,6 +11,7 @@
   - face-recognition
   - dlib
   - Django
+  - django-bootstrap4
 
 ## Pre-requisites
 
