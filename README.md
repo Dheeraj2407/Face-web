@@ -1,5 +1,5 @@
 # Face-Recognition
-
+  This project is still under development and won't work if deployed.
 ## Requirements
   - numpy
   - tensorflow>=1.12.1
