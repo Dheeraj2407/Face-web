@@ -51,55 +51,60 @@
 <video autoplay="true" id="videoElement">
 </video>
 </div>
+<button id='start'>Start Video</button>
 <button id="stop">Stop Video</button>
-<a id='download'>Download</a>
+<a id='download'></a>
 <script>
     var video = document.querySelector("#videoElement");
     var stopVideo = document.querySelector("#stop");
     var shouldStop = false;
     var downloadLink = document.querySelector('#download');
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream) {
-          video.srcObject = stream;
-          const options = {mimeType: 'video/webm'};
-          const recordedChunks = [];
-          const mediaRecorder = new MediaRecorder(stream, options);
-          mediaRecorder.addEventListener('dataavailable', function(e) {
-            if (e.data.size > 0) {
-              recordedChunks.push(e.data);
-            }
-            if(shouldStop === true && stopped === false) {
+    var startvideo = document.querySelector("#start");
+    startvideo.addEventListener('click',function(e) {
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+            const options = {mimeType: 'video/webm'};
+            const recordedChunks = [];
+            const mediaRecorder = new MediaRecorder(stream, options);
+            mediaRecorder.addEventListener('dataavailable', function(e) {
+              if (e.data.size > 0) {
+                recordedChunks.push(e.data);
+              }
+              if(shouldStop === true && stopped === false) {
+                mediaRecorder.stop();
+                stopped = true;
+              }
+            });
+
+            mediaRecorder.addEventListener('stop', function() {
+              downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+              downloadLink.download = 'acetest.webm';
+              downloadLink.innerHTML="Download";
+            });
+
+            mediaRecorder.start();
+
+            stopVideo.addEventListener("click", function(){
+              var stream = video.srcObject;
+              var tracks = stream.getTracks();
+
+              for (var i = 0; i < tracks.length; i++) {
+                var track = tracks[i];
+                track.stop();
+              }
+
+              video.srcObject = null;
               mediaRecorder.stop();
-              stopped = true;
-            }
+            });
+
+          })
+          .catch(function (err0r) {
+            console.log("Something went wrong!");
           });
-
-          mediaRecorder.addEventListener('stop', function() {
-            downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
-            downloadLink.download = 'acetest.webm';
-          });
-
-          mediaRecorder.start();
-
-          stopVideo.addEventListener("click", function(){
-            var stream = video.srcObject;
-            var tracks = stream.getTracks();
-
-            for (var i = 0; i < tracks.length; i++) {
-              var track = tracks[i];
-              track.stop();
-            }
-
-            video.srcObject = null;
-            mediaRecorder.stop();
-          });
-
-        })
-        .catch(function (err0r) {
-          console.log("Something went wrong!");
-        });
-    }
+        }
+    });
   </script>
 </body>
 </html>
