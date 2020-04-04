@@ -22,20 +22,16 @@
 <script>
     var password1 = document.querySelector("#id_password1");
     var password2 = document.querySelector("#id_password2");
-    password1.onfocus=function(){
-        var smallText = document.querySelector("#id_password1 + small")
+    password1.onfocus=function(){show(password1.id);}
+    password1.onblur=function(){hide(password1.id);}
+    password2.onfocus=function(){show(password2.id);}
+    password2.onblur=function(){hide(password2.id);}
+    function show(id){
+        var smallText = document.querySelector("#"+id+" + small")
         smallText.style.display = 'block';
     }
-    password1.onblur=function(){
-        var smallText = document.querySelector("#id_password1 + small")
-        smallText.style.display = 'none';
-    }
-    password2.onfocus=function(){
-        var smallText = document.querySelector("#id_password2 + small")
-        smallText.style.display = 'block';
-    }
-    password2.onblur=function(){
-        var smallText = document.querySelector("#id_password2 + small")
+    function hide(id){
+        var smallText = document.querySelector("#"+id+" + small")
         smallText.style.display = 'none';
     }
 </script>
