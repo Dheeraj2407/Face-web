@@ -1,16 +1,44 @@
 {% extends "registration/base.html" %}
+{% block page_head %}
 {% load bootstrap4 %}
+<style>
+    small.form-text.text-muted{
+        display: none;
+    }
+</style>
+
+{% endblock page_head %}
 {% block page_header %}
     <h2>Register for free</h2>
 {% endblock page_header %}
 {% block content %}
 
-    <form method='post' action="{% url 'faceapp:register' %}">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-            <button name="submit" class="btn btn-primary">Register</button>
-        <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
-    </form>
+<form method='post' action="{% url 'faceapp:register' %}">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
+    <button name="submit" class='btn btn-primary'>Register</button>
+    <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+</form>
+<script>
+    var password1 = document.querySelector("#id_password1");
+    var password2 = document.querySelector("#id_password2");
+    password1.onfocus=function(){
+        var smallText = document.querySelector("#id_password1 + small")
+        smallText.style.display = 'block';
+    }
+    password1.onblur=function(){
+        var smallText = document.querySelector("#id_password1 + small")
+        smallText.style.display = 'none';
+    }
+    password2.onfocus=function(){
+        var smallText = document.querySelector("#id_password2 + small")
+        smallText.style.display = 'block';
+    }
+    password2.onblur=function(){
+        var smallText = document.querySelector("#id_password2 + small")
+        smallText.style.display = 'none';
+    }
+</script>
 
 {% endblock content %}  
 

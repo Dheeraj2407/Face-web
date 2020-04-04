@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
+from faceapp.forms import SignUpForm
 
 # Create your views here.
 
 
 def register(request):
     '''Register a new user'''
+    if request.user.is_authenticated:
+        return redirect('faceapp:index')
     if request.method != "POST":
         # Display new registration form
-        form = UserCreationForm()
+        form = SignUpForm()
     else:
         # Process completed form
-        form = UserCreationForm(data=request.POST)
+        form = SignUpForm(data=request.POST)
         if form.is_valid():
             new_user = form.save()
             # Login the user and redirect to home page
