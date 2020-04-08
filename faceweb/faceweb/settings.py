@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'faceapp',
     # Third party apps
     'bootstrap4',
+    'widget_tweaks',
     # Default Django apps
     'django.contrib.admin',
     'django.contrib.auth',

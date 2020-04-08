@@ -12,7 +12,7 @@
   - dlib
   - Django
   - django-bootstrap4
-
+  - django-widget-tweaks
 ## Pre-requisites
 
 If you use Linux then you can download the weights by executing the script provided in model-weights.
