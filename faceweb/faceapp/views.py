@@ -38,3 +38,6 @@ def index(request):
 
 def test(request):
     return render(request, 'registration/test.html')
+
+def contact(request):
+    return render(request,'registration/contact.html')

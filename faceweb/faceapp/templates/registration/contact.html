@@ -1,0 +1,37 @@
+{% extends "registration/base.html" %}
+{% load static %}
+{% block page_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'registration/css/style.css' %}">
+{% endblock page_head %}
+
+{% block content %}
+
+<div id="body-con">
+	<div class="container-con">
+		<div class="formBox">
+			<form>
+				<h2>Contact Us</h2>
+				<div class="inputBox">
+					<input type="text" name="" required="required">
+					<span>Full Name</span>
+				</div>
+				<div class="inputBox">
+					<input type="text" name="" required="required">
+					<span>Email Address</span>
+				</div>
+				<div class="inputBox">
+					<textarea required="required"></textarea>
+					<span>Message</span>
+				</div>
+				<div class="inputBox">
+					<input type="submit" name="" value="Send" >
+				</div>
+			</form>
+		</div>
+		<div class="imgBox">
+			<img src="{% static 'registration/img/girl.png' %}">
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
