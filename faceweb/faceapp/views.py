@@ -19,9 +19,9 @@ def register(request):
         if form.is_valid():
             new_user = form.save()
             username = form.cleaned_data['username']
-            if re.search('\d[A-Z]{2}\d{2}[A-Z]{2}\d{3}',username):
+            if re.search(r'\d[A-Z]{2}\d{2}[A-Z]{2}\d{3}',username):
                 group = Group.objects.get(name='Student')
-            elif re.search('[A-Z]{2}\d{3}',username):
+            elif re.search(r'[A-Z]{2}\d{3}',username):
                 group = Group.objects.get(name='Teacher')    
             new_user.groups.add(group)
             # Login the user and redirect to home page
