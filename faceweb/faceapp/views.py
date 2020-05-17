@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login
-from faceapp.forms import SignUpForm
+from faceapp.forms import SignUpForm, UserUpdateForm
 from django.contrib.auth.models import Group
 import re
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -33,8 +34,19 @@ def register(request):
 
 
 def index(request):
-    return render(request, 'registration/index.html')
-
+    if request.user.is_authenticated:
+        user = User.objects.get_by_natural_key(request.user.username)
+        if request.method!='POST':
+            default_data = {'username':user.username, 'first_name':user.first_name,'last_name':user.last_name, 'email':user.email}
+            form = UserUpdateForm(default_data, auto_id=False)
+        else:
+            form = UserUpdateForm(data=request.POST, instance=user)
+            if form.is_valid():
+                user = form.save()
+        context = {'form':form}
+        return render(request, 'registration/index.html',context=context)
+    else:    
+        return render(request, 'registration/index.html')
 
 def test(request):
     return render(request, 'registration/test.html')
