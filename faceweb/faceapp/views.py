@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login
 from faceapp.forms import SignUpForm
-
+from django.contrib.auth.models import Group
+import re
 # Create your views here.
 
 
@@ -17,6 +18,12 @@ def register(request):
         form = SignUpForm(data=request.POST)
         if form.is_valid():
             new_user = form.save()
+            username = form.cleaned_data['username']
+            if re.search('\d[A-Z]{2}\d{2}[A-Z]{2}\d{3}',username):
+                group = Group.objects.get(name='Student')
+            elif re.search('[A-Z]{2}\d{3}',username):
+                group = Group.objects.get(name='Teacher')    
+            new_user.groups.add(group)
             # Login the user and redirect to home page
             login(request, new_user)
             return redirect('faceapp:index')
