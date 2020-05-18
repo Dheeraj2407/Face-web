@@ -19,7 +19,36 @@
     	.logout-nav{
     		color: #ff1f5a;
     	}
-
+		.glow{
+			color:#fff;
+			transition: .2s;
+	 		text-shadow:
+			  0 0 2px rgba(202, 228, 225, 0.92), 
+			 			0 0 10px rgba(202, 228, 225, 0.34), 
+			 			0 0 4px rgba(30, 132, 242, 0.52), 
+			 			0 0 7px rgba(30, 132, 242, 0.92), 
+			 			0 0 11px rgba(30, 132, 242, 0.78), 
+			 			0 0 16px rgba(30, 132, 242, 0.92);
+		}
+		.glow:hover{
+			color: white;
+		}
+		.nav-link{
+			color: black;
+			transition: 0.1s;
+		}
+		.nav-link:hover{
+			color: #fff;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 40px #0ff,
+    0 0 80px #0ff,
+    0 0 90px #0ff,
+    0 0 100px #0ff,
+    0 0 150px #0ff;
+		}
     </style>
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
@@ -28,8 +57,8 @@
 	{% endblock page_head %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-nav mb-4 border">
-        <a class="navbar-brand" href="{% url 'faceapp:index'%}">FaceWeb</a>
+    <nav class="navbar navbar-expand-md bg-nav mb-4 border">
+        <a class="navbar-brand glow" href="{% url 'faceapp:index'%}">FaceWeb</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
 		</button> 
