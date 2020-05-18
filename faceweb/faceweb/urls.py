@@ -19,4 +19,9 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('faceapp.urls')),
+    path('login/',include('django.contrib.auth.urls'),name='password_reset_form'),
+    path('login/',include('django.contrib.auth.urls'),name='password_reset_done'),
+    path('login/',include('django.contrib.auth.urls'),name='password_reset_complete'),
+    path('login/',include('django.contrib.auth.urls'),name='password_reset_confirm'),
+    path('login/',include('django.contrib.auth.urls'),name='password_reset_done'),
 ]

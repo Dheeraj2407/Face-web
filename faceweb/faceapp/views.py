@@ -4,6 +4,7 @@ from faceapp.forms import SignUpForm, UserUpdateForm
 from django.contrib.auth.models import Group
 import re
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 
 
@@ -38,16 +39,18 @@ def index(request):
         user = User.objects.get_by_natural_key(request.user.username)
         default_data = {'username':user.username, 'first_name':user.first_name,'last_name':user.last_name, 'email':user.email}
         form = UserUpdateForm(default_data, auto_id=False)
-        if request.method=="POST":
+        passwordForm = PasswordChangeForm(user=user)
+        if request.method == "POST":
             data = request.POST
-            print(data.get('first_name'))
             if data.get('first_name'):
                 form = UserUpdateForm(data=request.POST, instance=user)
                 if form.is_valid():
                     user = form.save()
-            elif data.get('password1'):
-                pass
-        context = {'form':form}
+            elif data.get('old_password'):
+                passwordForm = PasswordChangeForm(user=user,data=request.POST)
+                if passwordForm.is_valid():
+                    user = passwordForm.save()
+        context = {'form':form,'passwordForm':passwordForm}
         return render(request, 'registration/index.html',context=context)
     else:    
         return render(request, 'registration/index.html')

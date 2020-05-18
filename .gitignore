@@ -1,2 +1,3 @@
 faceweb/model-weights/*.weights
 .vscode/
+faceweb/sent_emails/*
