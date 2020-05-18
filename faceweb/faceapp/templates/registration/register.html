@@ -19,6 +19,7 @@
     <button name="submit" class='btn btn-primary'>Register</button>
     <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
 </form>
+
 <script>
     var password1 = document.querySelector("#id_password1");
     var password2 = document.querySelector("#id_password2");
@@ -34,6 +35,30 @@
         var smallText = document.querySelector("#"+id+" + small")
         smallText.style.display = 'none';
     }
+
+
+    const inputs = document.querySelectorAll(".input");
+
+
+    function addcl(){
+        let parent = this.parentNode.parentNode;
+        parent.classList.add("focus");
+    }
+
+    function remcl(){
+        let parent = this.parentNode.parentNode;
+        if(this.value == ""){
+            parent.classList.remove("focus");
+        }
+    }
+
+
+    inputs.forEach(input => {
+        input.addEventListener("focus", addcl);
+        input.addEventListener("blur", remcl);
+    });
+
+
 </script>
 
 {% endblock content %}  

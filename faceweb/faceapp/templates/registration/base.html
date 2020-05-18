@@ -5,6 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FaceWeb</title>
+
+    <style type="text/css">
+    	@import url('https://fonts.googleapis.com/css?family=Poppins:600&display=swap');
+    	.bg-nav{
+    		font-weight: 600;
+    		font-family: 'Poppins', sans-serif;
+    		background: linear-gradient(141deg, #23989C 0%, #1fc8db 51%, #2cb5e8);
+    	}
+    	.login-name{
+    		color: #a7ff83;
+    	}
+    	.logout-nav{
+    		color: #ff1f5a;
+    	}
+
+    </style>
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
 	{% block page_head %}
@@ -12,7 +28,7 @@
 	{% endblock page_head %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light style='background-color: #e3f2fd;' mb-4 border">
+    <nav class="navbar navbar-expand-md navbar-light bg-nav mb-4 border">
         <a class="navbar-brand" href="{% url 'faceapp:index'%}">FaceWeb</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,14 +38,16 @@
 			<li class="nav-item">
 			<a class="nav-link" href="{% url 'faceapp:contact' %}">
 			Contact</a></li>
+			<a class="nav-link" href="{% url 'faceapp:promo' %}">
+			Promo</a></li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				{% if user.is_authenticated %}
 				<li class="nav-item">
-				<span class="navbar-text">Hello, {{ user.first_name }}</span>
+				<span class="navbar-text">Hello, <span class="login-name">{{ user.first_name }}</span></span>
 				</li>
 				<li class="nav-item">
-				<a class="nav-link" href="{% url 'faceapp:logout' %}">Log out</a>
+				<a class="nav-link" href="{% url 'faceapp:logout' %}"><span class="logout-nav"> Log out</span></a>
 				</li>
 				{% else %}
 				<li class="nav-item">
@@ -50,4 +68,5 @@
 		</div>
 	</main>   
 </body>
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 </html>

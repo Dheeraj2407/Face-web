@@ -57,3 +57,6 @@ def test(request):
 
 def contact(request):
     return render(request,'registration/contact.html')
+
+def promo(request):
+    return render(request,'registration/promo.html')
