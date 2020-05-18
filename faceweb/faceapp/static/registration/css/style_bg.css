@@ -9,8 +9,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-height: 200vh;
-		background: #111;
+		height: 200vh;
+		background: white;
 	}
 
 	.container:after{
@@ -41,7 +41,10 @@
 		
 
 	}
-
+	.sec-view{
+		height: 100vh;
+		
+	}
 	.container .textBox{
 		position: absolute;
 		top: 0;

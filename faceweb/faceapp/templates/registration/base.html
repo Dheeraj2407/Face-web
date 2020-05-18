@@ -1,4 +1,5 @@
 {% load bootstrap4 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,10 @@
     		font-weight: 600;
     		font-family: 'Poppins', sans-serif;
     		background: linear-gradient(141deg, #23989C 0%, #1fc8db 51%, #2cb5e8);
-    	}
+		}
+		body{
+			font-family: 'Poppins', sans-serif;
+		}
     	.login-name{
     		color: #a7ff83;
     	}
@@ -49,6 +53,20 @@
     0 0 100px #0ff,
     0 0 150px #0ff;
 		}
+		.jumbotron{
+			color: white;
+			position: relative;
+			background: url("{% static 'registration/img/img_005.jpg' %}");
+			background-size: cover;
+			
+		}
+		#dash{
+			font-family: 'Poppins', sans-serif;
+		background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	
+}
     </style>
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}

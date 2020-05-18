@@ -1,25 +1,58 @@
 {% extends "registration/base.html" %}
+{% load static %}
 {% block page_head %}
 {% load bootstrap4 %}
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:600&display=swap');
+    
     small.form-text.text-muted{
         display: none;
     }
+    .container{
+        width: 600px;
+        font-family: 'Poppins', sans-serif;
+        padding-top: 30px;
+        
+    }
+    body{
+        background-image: url("{% static 'registration/img/img_006.jpg' %}");
+        background-size: cover;
+        filter: grayscale(50px);
+    }
+    .btn-wid{
+        width: 350px;
+        color: white;
+    }
+    h2{
+        color: #1e2a78;
+        padding-left: 10px;
+    }
+    .img{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>
 
 {% endblock page_head %}
 {% block page_header %}
-    <h2>Register for free</h2>
+    
+    <div class="img">
+        <img src="{% static 'registration/img/reg-av.svg' %}" width="100px" height="100px">
+        <h2>Register for free</h2>
+	</div>
 {% endblock page_header %}
 {% block content %}
-
+<div class="container">
 <form method='post' action="{% url 'faceapp:register' %}">
     {% csrf_token %}
     {% bootstrap_form form layout='horizontal' %}
-    <button name="submit" class='btn btn-primary'>Register</button>
+    <center>
+    <button name="submit" class='btn btn-warning btn-wid'>Register</button>
+    </center>
     <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
 </form>
-
+</div>
 <script>
     var password1 = document.querySelector("#id_password1");
     var password2 = document.querySelector("#id_password2");
@@ -35,28 +68,6 @@
         var smallText = document.querySelector("#"+id+" + small")
         smallText.style.display = 'none';
     }
-
-
-    const inputs = document.querySelectorAll(".input");
-
-
-    function addcl(){
-        let parent = this.parentNode.parentNode;
-        parent.classList.add("focus");
-    }
-
-    function remcl(){
-        let parent = this.parentNode.parentNode;
-        if(this.value == ""){
-            parent.classList.remove("focus");
-        }
-    }
-
-
-    inputs.forEach(input => {
-        input.addEventListener("focus", addcl);
-        input.addEventListener("blur", remcl);
-    });
 
 
 </script>
