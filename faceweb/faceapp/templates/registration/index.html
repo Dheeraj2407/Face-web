@@ -1,12 +1,16 @@
 {% extends "registration/base.html" %}
+{% load static %}
 {% load bootstrap4 %}
 {% block page_header %}
+<div class="body_1">
     {% if user.is_authenticated %}
 
-        <h1>Dashboard</h1>
+        <h1 id="dash">Dashboard</h1>
     
     {% else %}
+        
         <div class="jumbotron">
+            
             <h1 class="display-3">Use your face for marking your presence.</h1>
             <p class="lead">Make attendance marking simple by using face recognition. Upload your current photo through device camera and just mark your presence.</p>
             <a class="btn btn-lg btn-primary" href="{% url 'faceapp:register' %}" role="button">Register &raquo;</a>
@@ -20,14 +24,15 @@
     <h4>What do you wish to do?</h4>
 
     <div class="accordion" id="accordionExample">
-    <div class="card">
-        <div class="card-header" id="headingOne">
-        <h5 class="mb-0">
-            <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Register as an Attendee
-            </button>
-        </h5>
-        </div>
+        <div class="card text-white bg-info mb-3" style="max-width: 100%;">
+            <div class="card-header">Follow the given instructions for better results.</div>
+            <div class="card-body">
+              <h5 class="card-title">Register as an Attendee</h5>
+              <p class="card-text">The Attendence is taken on the basis of face data recorded by the digital camera, Please Carefully add your face data for further face detections.
+                Provide the Required face data.</p>
+            </div>
+          </div>
+    
 
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body">
@@ -78,8 +83,9 @@
             </form>
         </div>
     </div>
+    
     </div>
-  
+  </div>
     
     {% endif %}
 
