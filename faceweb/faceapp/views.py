@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 import re
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import Teacher
+from .models import TeacherClass
 # Create your views here.
 
 
@@ -55,6 +55,8 @@ def index(request):
                 if passwordForm.is_valid():
                     user = passwordForm.save()
         context = {'form':form,'passwordForm':passwordForm,'group':group}
+        if group == 'Teacher':
+            context['classRooms'] = TeacherClass.objects.filter(user = user.username)
         return render(request, 'registration/index.html',context=context)
     else:    
         return render(request, 'registration/index.html')
