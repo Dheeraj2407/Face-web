@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login
-from faceapp.forms import SignUpForm, UserUpdateForm
+from faceapp.forms import *
 from django.contrib.auth.models import Group
 import re
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import TeacherClass
+from .models import TeacherClass, Subject, ClassRoom
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_POST
 # Create your views here.
 
 
@@ -45,6 +46,9 @@ def index(request):
         default_data = {'username':user.username, 'first_name':user.first_name,'last_name':user.last_name, 'email':user.email}
         form = UserUpdateForm(default_data, auto_id=False)
         passwordForm = PasswordChangeForm(user=user)
+        addSubjectsForm = AddSubjectForm()
+        addClassRoomsForm = AddClassRoomsForm()
+        engageClassesForm = EngageClassesForm()
         if request.method == "POST":
             data = request.POST
             if data.get('first_name'):
@@ -55,9 +59,11 @@ def index(request):
                 passwordForm = PasswordChangeForm(user=user,data=request.POST)
                 if passwordForm.is_valid():
                     user = passwordForm.save()
-        context = {'form':form,'passwordForm':passwordForm,'group':group}
+        context = {'form':form,'passwordForm':passwordForm,'group':group, 'addSubjectsForm':addSubjectsForm, 'addClassRoomsForm':addClassRoomsForm, 'engageClassesForm':engageClassesForm}
         if group == 'Teacher':
-            context['classRooms'] = TeacherClass.objects.filter(user = user.username)
+            context['classes'] = TeacherClass.objects.filter(user = user.username)
+            context['classRooms'] = ClassRoom.objects.all()
+            context['subjects'] = Subject.objects.all()
         return render(request, 'registration/index.html',context=context)
     else:    
         return render(request, 'registration/index.html')
@@ -71,7 +77,32 @@ def contact(request):
 def promo(request):
     return render(request,'registration/promo.html')
 
+@require_POST
 @login_required
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
 def add_classes(request):
-    return render(request,"registration/add_classes.html")
+    form = AddSubjectForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+    next = request.POST.get('next')
+    return redirect(next)
+
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def add_subjects(request):
+    form = AddSubjectForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+    next = request.POST.get('next')
+    return redirect(next)
+
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def add_classRooms(request):
+    form = AddClassRoomsForm(data=request.POST)
+    if form.is_valid():
+        form.save()
+    next = request.POST.get('next')
+    return redirect(next)

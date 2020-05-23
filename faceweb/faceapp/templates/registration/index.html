@@ -1,6 +1,7 @@
 {% extends "registration/base.html" %}
 {% load static %}
 {% load bootstrap4 %}
+{% load widget_tweaks %}
 {% block page_header %}
 <div class="body_1">
     {% if user.is_authenticated %}
@@ -31,17 +32,67 @@
             </button>
         </h5>
         </div>
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body"> 
         {% if group == 'Teacher' %}
+            <h5>Engage Classes</h5>
             <div class='yourClasses'>
-            <a href="{% url 'faceapp:add_classes' %}"><button class="btn btn-primary">Add class</button></a>
-            {% if classRooms|length == 0 %}
+            <form action="{% url 'faceapp:add_classes'%}" method="POST">
+                {% csrf_token %}
+                {% render_field engageClassesForm.classRoom placeholder="Class Room" %}
+                {% render_field engageClassesForm.subject placeholder="Subject" %}
+                <input type='hidden' name='user' value=user.username/>
+                <button name="submit" class='btn btn-primary'>Engage Class</button>
+                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+            </form>
+            {% if classes|length == 0 %}
             No Classes.
-            {% endif %}
-            {% for classRoom in classRooms %}
-                <a>classRoom</a>
+            {% else %}
+            <table>
+            <th>Classes</th>
+            {% for class in classes %}
+                <tr><td><a>{{class}}</a></td></tr>
             {% endfor %}
+            </table>
+            {%endif%}
+            </div>
+            <h5>Add Subjects</h5>
+            <div class="subjects">
+            <form action="{% url 'faceapp:add_subjects'%}" method="POST">
+                {% csrf_token %}
+                {% render_field addSubjectsForm.name placeholder="Subject" %}
+                <button name="submit" class='btn btn-primary'>Add Subject</button>
+                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+            </form>
+            {% if subjects|length == 0 %}
+            No Subjects.
+            {% else %}
+            <table>
+            <th>Subjects</th>
+            {% for subject in subjects %}
+                <tr><td><a>{{subject}}</a></td></tr>
+            {% endfor %}
+            </table>
+            {% endif %}
+            </div>
+            <h5>Add ClassRooms</h5>
+            <div class="classRooms">
+            <form action="{% url 'faceapp:add_classRooms'%}" method="POST">
+                {% csrf_token %}
+                {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
+                <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
+                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+            </form>
+            {% if classRooms|length == 0 %}
+            No Class Rooms.
+            {% else %}
+            <table>
+            <th>ClassRooms</th>
+            {% for classRoom in classRooms %}
+               <tr><td><a>{{classRoom}}</a></td></tr>
+            {% endfor %}
+            </table>
+            {% endif %}
             </div>
         {% elif group == 'Student' %}
 

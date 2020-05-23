@@ -15,4 +15,6 @@ urlpatterns = [
     path('contact/',views.contact,name='contact'),
     path('promo/',views.promo,name='promo'),
     path('add_classes/',views.add_classes,name='add_classes'),
+    path('add_subjects/',views.add_subjects,name='add_subjects'),
+    path('add_classRooms/',views.add_classRooms,name='add_classRooms'),
 ]
