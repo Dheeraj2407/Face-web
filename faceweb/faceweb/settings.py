@@ -65,6 +65,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# My Settings
+#LOGIN_URL='faceapp:login'
+
 ROOT_URLCONF = 'faceweb.urls'
 
 TEMPLATES = [

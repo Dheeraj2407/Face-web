@@ -33,7 +33,19 @@
         </div>
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body"> 
-        {{ classRooms }}           
+        {% if group == 'Teacher' %}
+            <div class='yourClasses'>
+            <a href="{% url 'faceapp:add_classes' %}"><button class="btn btn-primary">Add class</button></a>
+            {% if classRooms|length == 0 %}
+            No Classes.
+            {% endif %}
+            {% for classRoom in classRooms %}
+                <a>classRoom</a>
+            {% endfor %}
+            </div>
+        {% elif group == 'Student' %}
+
+        {% endif %}
         </div>
         </div>
     </div>

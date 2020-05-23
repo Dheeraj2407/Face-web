@@ -6,6 +6,7 @@ import re
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from .models import TeacherClass
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 
 
@@ -69,3 +70,8 @@ def contact(request):
 
 def promo(request):
     return render(request,'registration/promo.html')
+
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def add_classes(request):
+    return render(request,"registration/add_classes.html")

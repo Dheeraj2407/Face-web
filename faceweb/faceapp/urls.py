@@ -14,4 +14,5 @@ urlpatterns = [
     path('test/',views.test,name='test'),
     path('contact/',views.contact,name='contact'),
     path('promo/',views.promo,name='promo'),
+    path('add_classes/',views.add_classes,name='add_classes'),
 ]
