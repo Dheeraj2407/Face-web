@@ -1,25 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 # Create your models here.
+
 class Subject(models.Model):
-    name = models.CharField(max_length=50,default='')
+    name = models.CharField(max_length=50,default='',primary_key=True)
     def __str__(self):
         return self.name
 
 class ClassRoom(models.Model):
-    classRoom = models.IntegerField()
+    classRoom = models.IntegerField(default=0, primary_key=True)
     def __str__(self):
         """Return string representation of the model."""
         return str(self.classRoom)
 
+class Teacher(models.Model):
+    user = models.OneToOneField(User, primary_key=True, to_field='username', on_delete=models.CASCADE)
+
 class TeacherClass(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
 class StudentClass(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, to_field='username', primary_key=True)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
 
 class AttendanceLogs(models.Model):

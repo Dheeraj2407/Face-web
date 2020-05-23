@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 import re
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
+from .models import Teacher
 # Create your views here.
 
 
@@ -24,7 +25,9 @@ def register(request):
             if re.search(r'\d[A-Z]{2}\d{2}[A-Z]{2}\d{3}',username):
                 group = Group.objects.get(name='Student')
             elif re.search(r'[A-Z]{2}\d{3}',username):
-                group = Group.objects.get(name='Teacher')    
+                group = Group.objects.get(name='Teacher')
+                t = Teacher(user=new_user)    
+                t.save()
             new_user.groups.add(group)
             # Login the user and redirect to home page
             login(request, new_user)
