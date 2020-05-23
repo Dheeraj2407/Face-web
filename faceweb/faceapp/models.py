@@ -16,10 +16,10 @@ class ClassRoom(models.Model):
 class TeacherClass(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
 class StudentClass(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
 
 class AttendanceLogs(models.Model):
@@ -29,7 +29,9 @@ class AttendanceLogs(models.Model):
     time = models.TimeField(auto_now_add=True)
 
 class TimeTable(models.Model):
-    ClassRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
+    classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
     day = models.CharField(max_length=50, default='')
     hour = models.IntegerField(default=0)
-    subject = models.ForeignKey(Subject)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = (('classRoom','day','hour'))
