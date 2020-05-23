@@ -37,6 +37,7 @@ def register(request):
 def index(request):
     if request.user.is_authenticated:
         user = User.objects.get_by_natural_key(request.user.username)
+        group = user.groups.all()[0].name
         default_data = {'username':user.username, 'first_name':user.first_name,'last_name':user.last_name, 'email':user.email}
         form = UserUpdateForm(default_data, auto_id=False)
         passwordForm = PasswordChangeForm(user=user)
@@ -50,7 +51,7 @@ def index(request):
                 passwordForm = PasswordChangeForm(user=user,data=request.POST)
                 if passwordForm.is_valid():
                     user = passwordForm.save()
-        context = {'form':form,'passwordForm':passwordForm}
+        context = {'form':form,'passwordForm':passwordForm,'group':group}
         return render(request, 'registration/index.html',context=context)
     else:    
         return render(request, 'registration/index.html')
