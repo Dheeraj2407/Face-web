@@ -46,7 +46,7 @@
                 <input type='hidden' name='engageClass' value="{% url 'faceapp:index' %}"/>
             </form>
             <h5>Available Classes</h5>
-            <select> 
+            <select id='room'> 
             {% if classes|length == 0 %}
             <option>No Classes.</option>
             {% else %}
@@ -55,6 +55,9 @@
                 <option>{{class.classRoom}}</option>
             {% endfor %}
             </select>
+                <div id="timeTable">
+                    Class {{ distinctClasses.0.classRoom }} TimeTable
+                </div>
             {%endif%}
             </div>
 
@@ -149,5 +152,13 @@
   </div>
     
     {% endif %}
+<script>
+$("#room").change(function(){
+    $("#timeTable").html("Class "+$(this).val()+" TimeTable")
+});
+
+
+</script>
+
 
 {% endblock content %}
