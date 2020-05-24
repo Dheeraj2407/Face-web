@@ -34,7 +34,9 @@
         </div>
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body"> 
+
         {% if group == 'Teacher' %}
+
             <h5>Engage Classes</h5>
             <div class='yourClasses'>
             <form action="{% url 'faceapp:index'%}" method="POST">
@@ -44,17 +46,18 @@
                 <input type='hidden' name='engageClass' value="{% url 'faceapp:index' %}"/>
             </form>
             <h5>Available Classes</h5>
+            <select> 
             {% if classes|length == 0 %}
-            No Classes.
+            <option>No Classes.</option>
             {% else %}
-            <table>
             <th>Classes</th>
             {% for class in distinctClasses %}
-                <tr><td><a>{{class.classRoom}}</a></td></tr>
+                <option>{{class.classRoom}}</option>
             {% endfor %}
-            </table>
+            </select>
             {%endif%}
             </div>
+
             <h5>Add Subjects</h5>
             <div class="subjects">
             <form action="{% url 'faceapp:index'%}" method="POST">
@@ -74,6 +77,7 @@
             </table>
             {% endif %}
             </div>
+            
             <h5>Add ClassRooms</h5>
             <div class="classRooms">
             <form action="{% url 'faceapp:index'%}" method="POST">
