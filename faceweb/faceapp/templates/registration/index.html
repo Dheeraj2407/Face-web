@@ -37,32 +37,31 @@
         {% if group == 'Teacher' %}
             <h5>Engage Classes</h5>
             <div class='yourClasses'>
-            <form action="{% url 'faceapp:add_classes'%}" method="POST">
+            <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
-                {% render_field engageClassesForm.classRoom placeholder="Class Room" %}
-                {% render_field engageClassesForm.subject placeholder="Subject" %}
-                <input type='hidden' name='user' value=user.username/>
+                {% bootstrap_form engageClassesForm layout="horizontal" %}
                 <button name="submit" class='btn btn-primary'>Engage Class</button>
-                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='engageClass' value="{% url 'faceapp:index' %}"/>
             </form>
+            <h5>Available Classes</h5>
             {% if classes|length == 0 %}
             No Classes.
             {% else %}
             <table>
             <th>Classes</th>
-            {% for class in classes %}
-                <tr><td><a>{{class}}</a></td></tr>
+            {% for class in distinctClasses %}
+                <tr><td><a>{{class.classRoom}}</a></td></tr>
             {% endfor %}
             </table>
             {%endif%}
             </div>
             <h5>Add Subjects</h5>
             <div class="subjects">
-            <form action="{% url 'faceapp:add_subjects'%}" method="POST">
+            <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
                 {% render_field addSubjectsForm.name placeholder="Subject" %}
                 <button name="submit" class='btn btn-primary'>Add Subject</button>
-                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='addSubject' value="{% url 'faceapp:index' %}"/>
             </form>
             {% if subjects|length == 0 %}
             No Subjects.
@@ -77,11 +76,11 @@
             </div>
             <h5>Add ClassRooms</h5>
             <div class="classRooms">
-            <form action="{% url 'faceapp:add_classRooms'%}" method="POST">
+            <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
                 {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
                 <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
-                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='addClass' value="{% url 'faceapp:index' %}"/>
             </form>
             {% if classRooms|length == 0 %}
             No Class Rooms.

@@ -17,9 +17,9 @@ class Teacher(models.Model):
     user = models.OneToOneField(User, primary_key=True, to_field='username', on_delete=models.CASCADE)
 
 class TeacherClass(models.Model):
-    user = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, to_field='user')
+    classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE, to_field='classRoom')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, to_field='name')
 
 class StudentClass(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, to_field='username', primary_key=True)

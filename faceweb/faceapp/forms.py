@@ -1,6 +1,7 @@
 # Create your forms here
 
 from django import forms
+from django.forms import ValidationError
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from .models import *
@@ -37,10 +38,28 @@ class AddClassRoomsForm(forms.ModelForm):
         fields = ('classRoom',)
         labels = {'classRoom':"Room Number"}
 
-class EngageClassesForm(forms.ModelForm):
-    user = forms.CharField(max_length=50, required=True)
+class EngageClassesForm(forms.Form):
     classRoom = forms.IntegerField(required=True)
     subject = forms.CharField(max_length=50, required=True)
     class Meta:
-        model = TeacherClass
         fields = ('user','classRoom','subject')
+    
+    def is_valid(self):
+        valid = super(EngageClassesForm,self).is_valid()
+        if not valid:
+            return valid
+        try:
+            ClassRoom.objects.get(pk=self.cleaned_data['classRoom'])
+        except:
+            #raise ValidationError('ClassRoom does not exist')
+            self._errors['classRoom'] = ["ClassRoom does not exist"]
+            return False
+        
+        try:
+            Subject.objects.get(pk=self.cleaned_data['subject'])
+        except:
+            #raise ValidationError('Subject does not exist')
+            self._errors['subject'] = ["Subject does not exist"]
+            return False
+        
+        return True

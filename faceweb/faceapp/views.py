@@ -41,6 +41,7 @@ def register(request):
 
 def index(request):
     if request.user.is_authenticated:
+
         user = User.objects.get_by_natural_key(request.user.username)
         group = user.groups.all()[0].name
         default_data = {'username':user.username, 'first_name':user.first_name,'last_name':user.last_name, 'email':user.email}
@@ -49,6 +50,7 @@ def index(request):
         addSubjectsForm = AddSubjectForm()
         addClassRoomsForm = AddClassRoomsForm()
         engageClassesForm = EngageClassesForm()
+
         if request.method == "POST":
             data = request.POST
             if data.get('first_name'):
@@ -59,8 +61,30 @@ def index(request):
                 passwordForm = PasswordChangeForm(user=user,data=request.POST)
                 if passwordForm.is_valid():
                     user = passwordForm.save()
+
+            elif data.get('engageClass'):
+                engageClassesForm = EngageClassesForm(data=data)
+                if engageClassesForm.is_valid():
+                    classRoom = ClassRoom.objects.get(pk=engageClassesForm.cleaned_data['classRoom'])
+                    subject = Subject.objects.get(pk=engageClassesForm.cleaned_data['subject'])
+                    teacher = Teacher.objects.get(pk=user.username)
+                    teacherClass = TeacherClass(classRoom=classRoom, subject=subject, user=teacher)
+                    teacherClass.save()
+                
+
+            elif data.get('addClass'):
+                addClassRoomsForm = AddClassRoomsForm(data=request.POST)
+                if addClassRoomsForm.is_valid():
+                    addClassRoomsForm.save()
+
+            elif data.get('addSubject'):
+                addSubjectForm = AddSubjectForm(data=request.POST)
+                if addSubjectForm.is_valid():
+                    addSubjectForm.save()
+
         context = {'form':form,'passwordForm':passwordForm,'group':group, 'addSubjectsForm':addSubjectsForm, 'addClassRoomsForm':addClassRoomsForm, 'engageClassesForm':engageClassesForm}
         if group == 'Teacher':
+            context['distinctClasses'] = TeacherClass.objects.filter(user = user.username).values('classRoom').distinct()
             context['classes'] = TeacherClass.objects.filter(user = user.username)
             context['classRooms'] = ClassRoom.objects.all()
             context['subjects'] = Subject.objects.all()
@@ -76,26 +100,13 @@ def contact(request):
 
 def promo(request):
     return render(request,'registration/promo.html')
-
+"""
 @require_POST
 @login_required
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
 def add_classes(request):
-    form = AddSubjectForm(data=request.POST)
-    if form.is_valid():
-        form.save()
-    next = request.POST.get('next')
-    return redirect(next)
-
-@require_POST
-@login_required
-@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
-def add_subjects(request):
-    form = AddSubjectForm(data=request.POST)
-    if form.is_valid():
-        form.save()
-    next = request.POST.get('next')
-    return redirect(next)
+    pass
+"""
 
 @require_POST
 @login_required
