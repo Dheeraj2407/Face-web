@@ -15,6 +15,8 @@ class ClassRoom(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, primary_key=True, to_field='username', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username
 
 class TeacherClass(models.Model):
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, to_field='user')
