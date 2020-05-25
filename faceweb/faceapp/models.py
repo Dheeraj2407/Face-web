@@ -35,6 +35,6 @@ class TimeTable(models.Model):
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
     day = models.CharField(max_length=50, default='')
     hour = models.IntegerField(default=0)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, default='')
     class Meta:
         unique_together = (('classRoom','day','hour'))

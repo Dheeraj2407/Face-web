@@ -57,8 +57,23 @@
             </select>
                 <div id="timeTable">
                     Class {{ distinctClasses.0.classRoom }} TimeTable
+                    <table border="2">
+                    <tr>
+                    <th></th>
+                    {% for hour in hours %}
+                        <th>{{ hour }}</th>
+                    {% endfor %}
+                    </tr>
+                    {% for day in days %}
+                    <tr><th>{{ day }}</th>
+                        {% for hour in hours %}
+                            <td>Blank</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}    
+                    </table>
                 </div>
-            {%endif%}
+            {% endif %}
             </div>
 
             <h5>Add Subjects</h5>

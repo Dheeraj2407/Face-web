@@ -50,6 +50,8 @@ def index(request):
         addSubjectsForm = AddSubjectForm()
         addClassRoomsForm = AddClassRoomsForm()
         engageClassesForm = EngageClassesForm()
+        days = ('Mon','Tue','Wed','Thu','Fri','Sat')
+        hours = range(1,8)
 
         if request.method == "POST":
             data = request.POST
@@ -82,7 +84,7 @@ def index(request):
                 if addSubjectForm.is_valid():
                     addSubjectForm.save()
 
-        context = {'form':form,'passwordForm':passwordForm,'group':group, 'addSubjectsForm':addSubjectsForm, 'addClassRoomsForm':addClassRoomsForm, 'engageClassesForm':engageClassesForm}
+        context = {'form':form,'passwordForm':passwordForm,'group':group, 'addSubjectsForm':addSubjectsForm, 'addClassRoomsForm':addClassRoomsForm, 'engageClassesForm':engageClassesForm, 'days':days, 'hours':hours}
         if group == 'Teacher':
             context['distinctClasses'] = TeacherClass.objects.filter(user = user.username).values('classRoom').distinct()
             context['classes'] = TeacherClass.objects.filter(user = user.username)
