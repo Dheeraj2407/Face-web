@@ -158,7 +158,7 @@ def fetchTimeTable(request):
         timeTable = TimeTable.objects.filter(classRoom=classRoom)
         r_t = []
         for i in timeTable:
-            r_t.append((i.day,i.hour))
+            r_t.append((i.day,i.hour,i.teacher))
         response_data['code'] = 1
         response_data['data'] = r_t
     except Exception as e:
