@@ -138,9 +138,32 @@ def scheduleClass(request):
         timeTable.save()
         print("DONE")
         response_data['success'] = "<font color='green'>Scheduled successfully</font>"
+        response_data['code'] = 1
     except Exception as e:
         response_data['success'] = "<font color='red'>Scheduling failed</font>"
+        response_data['code'] = 0
         print(e)
         return JsonResponse(response_data)
 
     return JsonResponse(response_data)
+
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def fetchTimeTable(request):
+    response_data = {}
+    classRoom = request.POST.get('classRoom')
+    timetable = None
+    try:
+        timeTable = TimeTable.objects.filter(classRoom=classRoom)
+        r_t = []
+        for i in timeTable:
+            r_t.append((i.day,i.hour))
+        response_data['code'] = 1
+        response_data['data'] = r_t
+    except Exception as e:
+        print(e)
+        response_data['code'] = 0
+    
+    return JsonResponse(response_data)
+    

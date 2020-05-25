@@ -79,7 +79,8 @@
                     <input type="hidden" name='classRoom' value=1 />
                     <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
                 </form>
-                <small id="json"></small>
+                <small id="scheduleError"></small>
+                <div id='res'></div>
                 </div>
             {% endif %}
             </div>
@@ -181,6 +182,7 @@ $("#room").change(function(){
 });
 
 $("#scheduleClass").click(function(event){
+    event.preventDefault();
     var formData = {
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
         'day' : $('#id_day').val(),
@@ -194,11 +196,29 @@ $("#scheduleClass").click(function(event){
         data : formData,
         dataType : 'json',
         success : function(json){
-            $("#json").html(json['success']);
+            $("#scheduleError").html(json['success']);
+            fetchTimeTable(formData['classRoom']);
+            
         }
     });
-    event.preventDefault();
+    
 });
+
+function fetchTimeTable(classRoom){
+    var formData = {
+        'classRoom' : classRoom,
+        'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val()
+    };
+    $.ajax({
+        type : "POST",
+        url : "{% url 'faceapp:fetchTimeTable' %}",
+        data : formData,
+        dataType : 'json',
+        success : function(json){
+                $("#res").html(json['data']);
+            }
+    });
+}
 
 </script>
 
