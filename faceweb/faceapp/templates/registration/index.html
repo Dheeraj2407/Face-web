@@ -58,19 +58,9 @@
                 <div id="timeTable">
                     Class {{ distinctClasses.0.classRoom }} TimeTable
                     <table id="timeTableDisplay" class='table table-bordered'>
-                    <tr>
-                    <th></th>
-                    {% for hour in hours %}
-                        <th>{{ hour }}</th>
-                    {% endfor %}
-                    </tr>
-                    {% for day in days %}
-                    <tr><th>{{ day }}</th>
-                        {% for hour in hours %}
-                            <td>Blank</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}    
+                    {% comment "timetable" %}
+                    scripted data
+                    {% endcomment %}  
                     </table>
                 <h5>Schedule Classes</h5>
                 <form id='schedule' method="POST" action="{% url 'faceapp:scheduleClass' %}">
@@ -244,6 +234,19 @@ function fetchTimeTable(classRoom){
                 days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
                 tt_data = json['data'];
                 var table = document.getElementById("timeTableDisplay");
+                table.innerHTML=`<tr>
+                    <th></th>
+                    {% for hour in hours %}
+                        <th>{{ hour }}</th>
+                    {% endfor %}
+                    </tr>
+                    {% for day in days %}
+                    <tr><th>{{ day }}</th>
+                        {% for hour in hours %}
+                            <td>Blank</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %} ` 
                 for(var i=0;i<tt_data.length;i++){
                     var row = days.indexOf(tt_data[i][0])+1;
                     var col = tt_data[i][1];
