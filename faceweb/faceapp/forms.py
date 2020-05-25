@@ -42,7 +42,7 @@ class EngageClassesForm(forms.Form):
     classRoom = forms.IntegerField(required=True)
     subject = forms.CharField(max_length=50, required=True)
     class Meta:
-        fields = ('user','classRoom','subject')
+        fields = ('classRoom','subject')
     
     def is_valid(self):
         valid = super(EngageClassesForm,self).is_valid()

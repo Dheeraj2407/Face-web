@@ -22,6 +22,8 @@ class TeacherClass(models.Model):
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, to_field='user')
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE, to_field='classRoom')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, to_field='name')
+    class Meta:
+        unique_together = (('user', 'classRoom', 'subject'))
 
 class StudentClass(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, to_field='username', primary_key=True)

@@ -96,7 +96,10 @@ def index(request):
             context['classes'] = TeacherClass.objects.filter(user = user.username)
             context['classRooms'] = ClassRoom.objects.all()
             context['subjects'] = Subject.objects.all()
-            context['timeTable'] = TimeTable.objects.filter(classRoom=context['distinctClasses'][0]['classRoom'])
+            if len(context['distinctClasses'])>0:
+                context['timeTable'] = TimeTable.objects.filter(classRoom=context['distinctClasses'][0]['classRoom'])
+            else:
+                context['timeTable'] = ''
         return render(request, 'registration/index.html',context=context)
 
     else:    
