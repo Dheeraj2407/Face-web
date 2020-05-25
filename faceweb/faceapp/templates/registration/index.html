@@ -56,11 +56,9 @@
             {% endfor %}
             </select>
                 <div id="timeTable">
-                    Class {{ distinctClasses.0.classRoom }} TimeTable
+                    Class <span id='roomNo'></span> TimeTable
                     <table id="timeTableDisplay" class='table table-bordered'>
-                    {% comment "timetable" %}
-                    scripted data
-                    {% endcomment %}  
+
                     </table>
                 <h5>Schedule Classes</h5>
                 <form id='schedule' method="POST" action="{% url 'faceapp:scheduleClass' %}">
@@ -170,9 +168,6 @@
 {% if group == 'Teacher' %}
 <script>
 window.onload=fetchTimeTable({{ distinctClasses.0.classRoom }})
-$("#room").change(function(){
-    $("#timeTable").html("Class "+$(this).val()+" TimeTable")
-});
 
 $("#scheduleClass").click(function(event){
     event.preventDefault();
@@ -233,8 +228,9 @@ function fetchTimeTable(classRoom){
         success : function(json){
                 days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
                 tt_data = json['data'];
+                $("#roomNo").html(classRoom);
                 var table = document.getElementById("timeTableDisplay");
-                table.innerHTML=`<tr>
+                table.innerHTML = `<tr>
                     <th></th>
                     {% for hour in hours %}
                         <th>{{ hour }}</th>
@@ -246,7 +242,7 @@ function fetchTimeTable(classRoom){
                             <td>Blank</td>
                         {% endfor %}
                     </tr>
-                    {% endfor %} ` 
+                    {% endfor %} ` ;
                 for(var i=0;i<tt_data.length;i++){
                     var row = days.indexOf(tt_data[i][0])+1;
                     var col = tt_data[i][1];
@@ -256,7 +252,9 @@ function fetchTimeTable(classRoom){
             }
     });
 }
-
+$("#room").change(function(event){
+    fetchTimeTable($(this).val());
+});
 </script>
 {% endif %}
 
