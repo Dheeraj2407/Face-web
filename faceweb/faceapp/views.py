@@ -150,6 +150,39 @@ def scheduleClass(request):
 @require_POST
 @login_required
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def disengageClass(request):
+    response_data = {}
+    data = request.POST
+    day = data.get('day')
+    hour = data.get('hour')
+    classRoom = data.get('classRoom')
+    user = request.user
+    print("Got request")
+
+    classRoom = ClassRoom.objects.get(pk=classRoom)
+    teacher = Teacher.objects.get(pk=user.username)
+
+    try: 
+        t = TimeTable.objects.filter(teacher=teacher, day=day, hour=hour, classRoom=classRoom)
+        print("DONE")
+        if len(t)>0:
+            response_data['success'] = "<font color='green'>Disengaged successfully</font>"
+            response_data['code'] = 1
+            t.delete()
+        else:
+            response_data['success'] = "<font color='red'>Disengaging failed</font>"
+            response_data['code'] = 0
+    except Exception as e:
+        response_data['success'] = "<font color='red'>Disengaging failed</font>"
+        response_data['code'] = 0
+        print(e)
+        return JsonResponse(response_data)
+
+    return JsonResponse(response_data)
+
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
 def fetchTimeTable(request):
     response_data = {}
     classRoom = request.POST.get('classRoom')

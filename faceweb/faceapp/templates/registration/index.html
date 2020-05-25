@@ -57,7 +57,7 @@
             </select>
                 <div id="timeTable">
                     Class {{ distinctClasses.0.classRoom }} TimeTable
-                    <table border="2" id="timeTableDisplay">
+                    <table id="timeTableDisplay" class='table table-bordered'>
                     <tr>
                     <th></th>
                     {% for hour in hours %}
@@ -78,6 +78,7 @@
                     {{ scheduleClassForm }}
                     <input type="hidden" name='classRoom' value=1 />
                     <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
+                    <button class='btn btn-danger' id='disengageClass'>Disengage</button>
                 </form>
                 <small id="scheduleError"></small>
                 <div id='res'></div>
@@ -205,6 +206,29 @@ $("#scheduleClass").click(function(event){
     });
     
 });
+
+$("#disengageClass").click(function(event){
+    event.preventDefault();
+    var formData = {
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+        'day' : $('#id_day').val(),
+        'hour' : $('input[name=hour]').val(),
+        'classRoom' :$('#room').val()
+    };
+    console.log(formData);
+    $.ajax({
+        type : "POST",
+        url : "{% url 'faceapp:disengageClass' %}",
+        data : formData,
+        dataType : 'json',
+        success : function(json){
+            $("#scheduleError").html(json['success']);
+            fetchTimeTable(formData['classRoom']); 
+        }
+    });
+    
+});
+
 
 function fetchTimeTable(classRoom){
     var formData = {
