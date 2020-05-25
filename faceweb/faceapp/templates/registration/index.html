@@ -57,7 +57,7 @@
             </select>
                 <div id="timeTable">
                     Class {{ distinctClasses.0.classRoom }} TimeTable
-                    <table border="2">
+                    <table border="2" id="timeTableDisplay">
                     <tr>
                     <th></th>
                     {% for hour in hours %}
@@ -176,7 +176,9 @@
   </div>
     
     {% endif %}
+{% if group == 'Teacher' %}
 <script>
+window.onload=fetchTimeTable({{ distinctClasses.0.classRoom }})
 $("#room").change(function(){
     $("#timeTable").html("Class "+$(this).val()+" TimeTable")
 });
@@ -215,12 +217,20 @@ function fetchTimeTable(classRoom){
         data : formData,
         dataType : 'json',
         success : function(json){
-                $("#res").html(json['data']);
+                days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+                tt_data = json['data'];
+                var table = document.getElementById("timeTableDisplay");
+                for(var i=0;i<tt_data.length;i++){
+                    var row = days.indexOf(tt_data[i][0])+1;
+                    var col = tt_data[i][1];
+                    table.rows[row].cells[col].innerHTML=tt_data[i][2];
+                }
+                
             }
     });
 }
 
 </script>
-
+{% endif %}
 
 {% endblock content %}
