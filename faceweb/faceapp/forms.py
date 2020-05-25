@@ -65,12 +65,12 @@ class EngageClassesForm(forms.Form):
         return True
 
 dayChoices = (
-    ('Mon','mon'),
-    ('Tue','tue'),
-    ('Wed','wed'),
-    ('Thu','thu'),
-    ('Fri','fri'),
-    ('Sat','sat'),
+    ('Mon','Mon'),
+    ('Tue','Tue'),
+    ('Wed','Wed'),
+    ('Thu','Thu'),
+    ('Fri','Fri'),
+    ('Sat','Sat'),
 )
 class ScheduleClassForm(forms.Form):
     day = forms.CharField(label='', widget=forms.Select(choices=dayChoices))

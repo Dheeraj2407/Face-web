@@ -123,5 +123,24 @@ def add_classes(request):
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
 def scheduleClass(request):
     response_data = {}
-    response_data['text'] = "Hello"
+    data = request.POST
+    day = data.get('day')
+    hour = data.get('hour')
+    classRoom = data.get('classRoom')
+    user = request.user
+    print("Got request")
+
+    classRoom = ClassRoom.objects.get(pk=classRoom)
+    teacher = Teacher.objects.get(pk=user.username)
+
+    try: 
+        timeTable = TimeTable(teacher=teacher, day=day, hour=hour, classRoom=classRoom)
+        timeTable.save()
+        print("DONE")
+        response_data['success'] = "<font color='green'>Scheduled successfully</font>"
+    except Exception as e:
+        response_data['success'] = "<font color='red'>Scheduling failed</font>"
+        print(e)
+        return JsonResponse(response_data)
+
     return JsonResponse(response_data)

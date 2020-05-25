@@ -73,12 +73,13 @@
                     {% endfor %}    
                     </table>
                 <h5>Schedule Classes</h5>
-                <form id='schedule' method="POST">
+                <form id='schedule' method="POST" action="{% url 'faceapp:scheduleClass' %}">
                     {% csrf_token %}
                     {{ scheduleClassForm }}
+                    <input type="hidden" name='classRoom' value=1 />
                     <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
                 </form>
-                <div id="json"></div>
+                <small id="json"></small>
                 </div>
             {% endif %}
             </div>
@@ -182,16 +183,18 @@ $("#room").change(function(){
 $("#scheduleClass").click(function(event){
     var formData = {
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
-        'day' : $('input[name=day]').val(),
-        'hour' : $('input[name=hour]').val()
+        'day' : $('#id_day').val(),
+        'hour' : $('input[name=hour]').val(),
+        'classRoom' :$('#room').val()
     };
+    console.log(formData);
     $.ajax({
         type : "POST",
         url : "{% url 'faceapp:scheduleClass' %}",
         data : formData,
         dataType : 'json',
         success : function(json){
-            $("#json").html(json['text']);
+            $("#json").html(json['success']);
         }
     });
     event.preventDefault();
