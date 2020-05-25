@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth import login
 from faceapp.forms import *
 from django.contrib.auth.models import Group
@@ -80,17 +81,24 @@ def index(request):
                     addClassRoomsForm.save()
 
             elif data.get('addSubject'):
-                addSubjectForm = AddSubjectForm(data=request.POST)
-                if addSubjectForm.is_valid():
-                    addSubjectForm.save()
+                addSubjectsForm = AddSubjectForm(data=request.POST)
+                if addSubjecstForm.is_valid():
+                    addSubjecstForm.save()
+            
 
-        context = {'form':form,'passwordForm':passwordForm,'group':group, 'addSubjectsForm':addSubjectsForm, 'addClassRoomsForm':addClassRoomsForm, 'engageClassesForm':engageClassesForm, 'days':days, 'hours':hours}
+        context = {'form':form,'passwordForm':passwordForm,'group':group,'days':days, 'hours':hours}
         if group == 'Teacher':
+            context['scheduleClassForm'] = ScheduleClassForm()
+            context['addSubjectsForm'] = addSubjectsForm
+            context['addClassRoomsForm'] = addClassRoomsForm
+            context['engageClassesForm'] = engageClassesForm
             context['distinctClasses'] = TeacherClass.objects.filter(user = user.username).values('classRoom').distinct()
             context['classes'] = TeacherClass.objects.filter(user = user.username)
             context['classRooms'] = ClassRoom.objects.all()
             context['subjects'] = Subject.objects.all()
+            context['timeTable'] = TimeTable.objects.filter(classRoom=context['distinctClasses'][0]['classRoom'])
         return render(request, 'registration/index.html',context=context)
+
     else:    
         return render(request, 'registration/index.html')
 
@@ -113,9 +121,7 @@ def add_classes(request):
 @require_POST
 @login_required
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
-def add_classRooms(request):
-    form = AddClassRoomsForm(data=request.POST)
-    if form.is_valid():
-        form.save()
-    next = request.POST.get('next')
-    return redirect(next)
+def scheduleClass(request):
+    response_data = {}
+    response_data['text'] = "Hello"
+    return JsonResponse(response_data)

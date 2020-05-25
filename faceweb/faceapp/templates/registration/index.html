@@ -72,6 +72,13 @@
                     </tr>
                     {% endfor %}    
                     </table>
+                <h5>Schedule Classes</h5>
+                <form id='schedule' method="POST">
+                    {% csrf_token %}
+                    {{ scheduleClassForm }}
+                    <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
+                </form>
+                <div id="json"></div>
                 </div>
             {% endif %}
             </div>
@@ -172,6 +179,23 @@ $("#room").change(function(){
     $("#timeTable").html("Class "+$(this).val()+" TimeTable")
 });
 
+$("#scheduleClass").click(function(event){
+    var formData = {
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+        'day' : $('input[name=day]').val(),
+        'hour' : $('input[name=hour]').val()
+    };
+    $.ajax({
+        type : "POST",
+        url : "{% url 'faceapp:scheduleClass' %}",
+        data : formData,
+        dataType : 'json',
+        success : function(json){
+            $("#json").html(json['text']);
+        }
+    });
+    event.preventDefault();
+});
 
 </script>
 
