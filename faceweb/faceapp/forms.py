@@ -31,6 +31,7 @@ class AddSubjectForm(forms.ModelForm):
         fields = ('name',)
         labels = {'name':'Subject Name'}
 
+
 class AddClassRoomsForm(forms.ModelForm):
     classRoom = forms.IntegerField(required=True)
     class Meta:

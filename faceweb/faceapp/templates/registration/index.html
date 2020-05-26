@@ -80,8 +80,10 @@
             <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
                 {% render_field addSubjectsForm.name placeholder="Subject" %}
-                <button name="submit" class='btn btn-primary'>Add Subject</button>
-                <input type='hidden' name='addSubject' value="{% url 'faceapp:index' %}"/>
+                {{ addClassRoomsForm.name.errors }}
+                <button name="submit" id='add' class='btn btn-primary'>Add Subject</button>
+                <input type='hidden' name='addSubject' id='addSubject' value='1' />
+                <button id='removeSubject' class='btn btn-danger'>Remove Subject</button>
             </form>
             {% if subjects|length == 0 %}
             No Subjects.
@@ -101,7 +103,7 @@
                 {% csrf_token %}
                 {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
                 <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
-                <input type='hidden' name='addClass' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='addClass'/>
             </form>
             {% if classRooms|length == 0 %}
             No Class Rooms.
@@ -263,6 +265,14 @@ $("#disengageClass").click(function(event){
     //$("#engageForm").submit();
     //event.preventDefault();
 
+});
+
+$("#removeSubject").click(function(event){
+    $("#addSubject").val('0');
+});
+
+$("#add").click(function(event){
+    $("#addSubject").val('1');
 });
 
 </script>

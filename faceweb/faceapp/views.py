@@ -86,8 +86,18 @@ def index(request):
 
             elif data.get('addSubject'):
                 addSubjectsForm = AddSubjectForm(data=request.POST)
+                print(addSubjectsForm.is_valid())
                 if addSubjectsForm.is_valid():
-                    addSubjectsForm.save()
+                    if data.get('addSubject') == '1':
+                        addSubjectsForm.save()
+                else:
+                    if data.get('addSubject') == '0':
+                        res = Subject.objects.filter(name=data.get('name'))
+                        if len(res)>0:
+                            res.delete()
+                        else:
+                            addSubjectsForm._errors['name'] = ['Subject does not exist']
+                        
             
 
         context = {'form':form,'passwordForm':passwordForm,'group':group,'days':days, 'hours':hours}
