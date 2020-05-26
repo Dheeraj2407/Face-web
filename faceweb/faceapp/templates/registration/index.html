@@ -46,11 +46,11 @@
                 <input type='hidden' name='engageClass' value="{% url 'faceapp:index' %}"/>
             </form>
             <h5>Available Classes</h5>
-            <select id='room'> 
+             
             {% if classes|length == 0 %}
-            <option>No Classes.</option>
+            <h6>No Classes.</h6>
             {% else %}
-            <th>Classes</th>
+            <select id='room'>
             {% for class in distinctClasses %}
                 <option>{{class.classRoom}}</option>
             {% endfor %}
@@ -66,7 +66,7 @@
                     {{ scheduleClassForm }}
                     <input type="hidden" name='classRoom' value=1 />
                     <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
-                    <button class='btn btn-danger' id='disengageClass'>Disengage</button>
+                    <button class='btn btn-danger' id='unscheduleClass'>Unschedule</button>
                 </form>
                 <small id="scheduleError"></small>
                 <div id='res'></div>
@@ -192,7 +192,7 @@ $("#scheduleClass").click(function(event){
     
 });
 
-$("#disengageClass").click(function(event){
+$("#unscheduleClass").click(function(event){
     event.preventDefault();
     var formData = {
         'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
@@ -203,7 +203,7 @@ $("#disengageClass").click(function(event){
     console.log(formData);
     $.ajax({
         type : "POST",
-        url : "{% url 'faceapp:disengageClass' %}",
+        url : "{% url 'faceapp:unscheduleClass' %}",
         data : formData,
         dataType : 'json',
         success : function(json){
@@ -255,6 +255,7 @@ function fetchTimeTable(classRoom){
 $("#room").change(function(event){
     fetchTimeTable($(this).val());
 });
+
 </script>
 {% endif %}
 

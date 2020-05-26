@@ -16,5 +16,5 @@ urlpatterns = [
     path('promo/',views.promo,name='promo'),
     path('scheduleClass/',views.scheduleClass,name='scheduleClass'),
     path('fetchTimeTable/',views.fetchTimeTable,name='fetchTimeTable'),
-    path('disengageClass/',views.disengageClass,name='disengageClass'),
+    path('unscheduleeClass/',views.unscheduleClass,name='unscheduleClass'),
 ]

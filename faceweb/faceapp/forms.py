@@ -39,7 +39,7 @@ class AddClassRoomsForm(forms.ModelForm):
         labels = {'classRoom':"Room Number"}
 
 class EngageClassesForm(forms.Form):
-    classRoom = forms.IntegerField(required=True)
+    class_Room = forms.IntegerField(required=True)
     subject = forms.CharField(max_length=50, required=True)
     class Meta:
         fields = ('classRoom','subject')
@@ -49,10 +49,10 @@ class EngageClassesForm(forms.Form):
         if not valid:
             return valid
         try:
-            ClassRoom.objects.get(pk=self.cleaned_data['classRoom'])
+            ClassRoom.objects.get(pk=self.cleaned_data['class_Room'])
         except:
             #raise ValidationError('ClassRoom does not exist')
-            self._errors['classRoom'] = ["ClassRoom does not exist"]
+            self._errors['class_Room'] = ["ClassRoom does not exist"]
             return False
         
         try:

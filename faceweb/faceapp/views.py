@@ -68,7 +68,7 @@ def index(request):
             elif data.get('engageClass'):
                 engageClassesForm = EngageClassesForm(data=data)
                 if engageClassesForm.is_valid():
-                    classRoom = ClassRoom.objects.get(pk=engageClassesForm.cleaned_data['classRoom'])
+                    classRoom = ClassRoom.objects.get(pk=engageClassesForm.cleaned_data['class_Room'])
                     subject = Subject.objects.get(pk=engageClassesForm.cleaned_data['subject'])
                     teacher = Teacher.objects.get(pk=user.username)
                     teacherClass = TeacherClass(classRoom=classRoom, subject=subject, user=teacher)
@@ -113,13 +113,6 @@ def contact(request):
 
 def promo(request):
     return render(request,'registration/promo.html')
-"""
-@require_POST
-@login_required
-@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
-def add_classes(request):
-    pass
-"""
 
 @require_POST
 @login_required
@@ -153,7 +146,7 @@ def scheduleClass(request):
 @require_POST
 @login_required
 @user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
-def disengageClass(request):
+def unscheduleClass(request):
     response_data = {}
     data = request.POST
     day = data.get('day')
