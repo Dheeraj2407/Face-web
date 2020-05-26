@@ -39,11 +39,12 @@
 
             <h5>Engage Classes</h5>
             <div class='yourClasses'>
-            <form action="{% url 'faceapp:index'%}" method="POST">
+            <form action="{% url 'faceapp:index'%}" method="POST" id='engageForm'>
                 {% csrf_token %}
                 {% bootstrap_form engageClassesForm layout="horizontal" %}
                 <button name="submit" class='btn btn-primary'>Engage Class</button>
-                <input type='hidden' name='engageClass' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                <button class='btn btn-danger' id='disengageClass'>Disengage Class</button>
             </form>
             <h5>Available Classes</h5>
              
@@ -229,7 +230,7 @@ function fetchTimeTable(classRoom){
                 days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
                 tt_data = json['data'];
                 var sub = json['subject'];
-                $("#roomNo").html('Class '+classRoom+' timetable          Subject:'+sub);
+                $("#roomNo").html('Class '+classRoom+' timetable Subject:'+sub);
                 var table = document.getElementById("timeTableDisplay");
                 table.innerHTML = `<tr>
                     <th></th>
@@ -255,6 +256,13 @@ function fetchTimeTable(classRoom){
 }
 $("#room").change(function(event){
     fetchTimeTable($(this).val());
+});
+
+$("#disengageClass").click(function(event){
+    $("#engageForm").attr('action',"{% url 'faceapp:disengageClass' %}");
+    //$("#engageForm").submit();
+    //event.preventDefault();
+
 });
 
 </script>

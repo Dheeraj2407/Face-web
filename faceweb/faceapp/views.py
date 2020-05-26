@@ -65,7 +65,7 @@ def index(request):
                 if passwordForm.is_valid():
                     user = passwordForm.save()
 
-            elif data.get('engageClass'):
+            elif data.get('class_Room'):
                 engageClassesForm = EngageClassesForm(data=data)
                 if engageClassesForm.is_valid():
                     classRoom = ClassRoom.objects.get(pk=engageClassesForm.cleaned_data['class_Room'])
@@ -86,8 +86,8 @@ def index(request):
 
             elif data.get('addSubject'):
                 addSubjectsForm = AddSubjectForm(data=request.POST)
-                if addSubjecstForm.is_valid():
-                    addSubjecstForm.save()
+                if addSubjectsForm.is_valid():
+                    addSubjectsForm.save()
             
 
         context = {'form':form,'passwordForm':passwordForm,'group':group,'days':days, 'hours':hours}
@@ -202,3 +202,21 @@ def fetchTimeTable(request):
     
     return JsonResponse(response_data)
     
+@require_POST
+@login_required
+@user_passes_test(lambda u: u.groups.all()[0].name == "Teacher")
+def disengageClass(request):
+    data = request.POST
+    classRoom = ClassRoom.objects.get(pk=data.get('class_Room'))
+    subject = Subject.objects.get(pk=data.get('subject'))
+    user = Teacher.objects.get(user=request.user)
+    try:
+        res = TeacherClass.objects.filter(classRoom=classRoom, subject=subject, user=user)
+        if len(res)>0:
+            res.delete()
+        res = TimeTable.objects.filter(classRoom=classRoom, teacher=user)
+        if len(res)>0:
+            res.delete()
+    except:
+        pass
+    return redirect(data.get('next'))
