@@ -69,10 +69,14 @@ def index(request):
                 engageClassesForm = EngageClassesForm(data=data)
                 if engageClassesForm.is_valid():
                     classRoom = ClassRoom.objects.get(pk=engageClassesForm.cleaned_data['class_Room'])
-                    subject = Subject.objects.get(pk=engageClassesForm.cleaned_data['subject'])
-                    teacher = Teacher.objects.get(pk=user.username)
-                    teacherClass = TeacherClass(classRoom=classRoom, subject=subject, user=teacher)
-                    teacherClass.save()
+                    res = TeacherClass.objects.filter(classRoom=classRoom, user=Teacher.objects.get(pk=user))
+                    if len(res)==0:
+                        subject = Subject.objects.get(pk=engageClassesForm.cleaned_data['subject'])
+                        teacher = Teacher.objects.get(pk=user.username)
+                        teacherClass = TeacherClass(classRoom=classRoom, subject=subject, user=teacher)
+                        teacherClass.save()
+                    else:
+                        engageClassesForm._errors['class_Room'] = ['You have already engaged for this class']
                 
 
             elif data.get('addClass'):

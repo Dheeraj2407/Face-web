@@ -61,6 +61,12 @@ class EngageClassesForm(forms.Form):
             #raise ValidationError('Subject does not exist')
             self._errors['subject'] = ["Subject does not exist"]
             return False
+
+        res = TeacherClass.objects.filter(classRoom=self.cleaned_data['class_Room'], subject=self.cleaned_data['subject'])
+        if len(res)>0:
+            self._errors['subject'] = ['Class already has that subject']
+            return False
+        
         
         return True
 
