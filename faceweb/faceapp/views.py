@@ -186,6 +186,7 @@ def unscheduleClass(request):
 def fetchTimeTable(request):
     response_data = {}
     classRoom = request.POST.get('classRoom')
+    user = Teacher.objects.get(pk=request.user)
     timetable = None
     try:
         timeTable = TimeTable.objects.filter(classRoom=classRoom)
@@ -194,6 +195,7 @@ def fetchTimeTable(request):
             r_t.append((i.day,i.hour,str(i.teacher)))
         response_data['code'] = 1
         response_data['data'] = r_t
+        response_data['subject'] = TeacherClass.objects.filter(user=user, classRoom=classRoom).values('subject')[0]['subject']
     except Exception as e:
         print(e)
         response_data['code'] = 0

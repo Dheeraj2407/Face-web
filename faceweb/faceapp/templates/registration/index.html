@@ -56,7 +56,7 @@
             {% endfor %}
             </select>
                 <div id="timeTable">
-                    Class <span id='roomNo'></span> TimeTable
+                    <span id='roomNo'></span>
                     <table id="timeTableDisplay" class='table table-bordered'>
 
                     </table>
@@ -228,7 +228,8 @@ function fetchTimeTable(classRoom){
         success : function(json){
                 days = ['Mon','Tue','Wed','Thu','Fri','Sat'];
                 tt_data = json['data'];
-                $("#roomNo").html(classRoom);
+                var sub = json['subject'];
+                $("#roomNo").html('Class '+classRoom+' timetable          Subject:'+sub);
                 var table = document.getElementById("timeTableDisplay");
                 table.innerHTML = `<tr>
                     <th></th>
