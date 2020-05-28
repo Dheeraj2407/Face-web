@@ -84,7 +84,15 @@ def index(request):
             elif data.get('classRoom'):
                 addClassRoomsForm = AddClassRoomsForm(data=request.POST)
                 if addClassRoomsForm.is_valid():
-                    addClassRoomsForm.save()
+                    if data.get('addClass') == '1':
+                        addClassRoomsForm.save()
+                    elif data.get('addClass') == '0':
+                        addSubjectsForm._errors['classRoom'] = '<ul class="errorlist"><li>ClassRoom does not exist</li></ul>'
+                else:
+                    if data.get('addClass') == '0':
+                        res = ClassRoom.objects.filter(classRoom=data.get('classRoom'))
+                        if len(res)>0:
+                            res.delete()
 
             elif data.get('addSubject'):
                 addSubjectsForm = AddSubjectForm(data=request.POST)
@@ -92,13 +100,12 @@ def index(request):
                 if addSubjectsForm.is_valid():
                     if data.get('addSubject') == '1':
                         addSubjectsForm.save()
-                else:
-                    if data.get('addSubject') == '0':
+                    elif data.get('addSubject') == '0':
+                        addSubjectsForm._errors['name'] = '<ul class="errorlist"><li>Subject does not exist</ul></li>'
+                elif data.get('addSubject') == '0':
                         res = Subject.objects.filter(name=data.get('name'))
                         if len(res)>0:
                             res.delete()
-                        else:
-                            addSubjectsForm._errors['name'] = ['Subject does not exist']
                         
             
 

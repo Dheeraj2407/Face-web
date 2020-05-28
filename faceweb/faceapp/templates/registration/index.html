@@ -13,6 +13,10 @@
 .tab{
     cursor : pointer;
 }
+ul.errorlist{
+    list-style-type : none;
+    color : red;
+}
 </style>
 
 {% endblock page_head %}
@@ -111,7 +115,7 @@
             <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
                 {% render_field addSubjectsForm.name placeholder="Subject" %}
-                {{ addSubjectsForm.name.errors }}
+                {% render_field addSubjectsForm.name.errors %}
                 <button name="submit" id='add' class='btn btn-primary'>Add Subject</button>
                 <input type='hidden' name='addSubject' id='addSubject' value='1' />
                 <input type='hidden' name='tab' value='2' />
@@ -136,8 +140,10 @@
                 <form action="{% url 'faceapp:index'%}" method="POST">
                     {% csrf_token %}
                     {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
+                    {% render_field addClassRoomsForm.classRoom.errors %}
                     <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
-                    <input type='hidden' name='addClass'/>
+                    <input type='hidden' id="addClass" name='addClass' value="1" />
+                    <button class='btn btn-danger' id='removeClass'>Remove ClassRoom</button>
                     <input type='hidden' name='tab' value="3"/>
                 </form>
                 {% if classRooms|length == 0 %}
@@ -275,7 +281,7 @@ function fetchTimeTable(classRoom){
                     {% for day in days %}
                     <tr><th>{{ day }}</th>
                         {% for hour in hours %}
-                            <td>Blank</td>
+                            <td>-----</td>
                         {% endfor %}
                     </tr>
                     {% endfor %} ` ;
@@ -351,6 +357,9 @@ window.onload= function(){
     if({{distinctClasses|length}}!=0)
         fetchTimeTable({{ distinctClasses.0.classRoom }});
 }
+$("#removeClass").click(function(){
+    $("#addClass").val('0');
+});
 </script>
 {% endif %}
 
