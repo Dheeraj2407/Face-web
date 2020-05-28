@@ -53,9 +53,11 @@ def index(request):
         engageClassesForm = EngageClassesForm()
         days = ('Mon','Tue','Wed','Thu','Fri','Sat')
         hours = range(1,8)
+        tab = '1'
 
         if request.method == "POST":
             data = request.POST
+            tab = data.get('tab')
             if data.get('first_name'):
                 form = UserUpdateForm(data=request.POST, instance=user)
                 if form.is_valid():
@@ -79,7 +81,7 @@ def index(request):
                         engageClassesForm._errors['class_Room'] = ['You have already engaged for this class']
                 
 
-            elif data.get('addClass'):
+            elif data.get('classRoom'):
                 addClassRoomsForm = AddClassRoomsForm(data=request.POST)
                 if addClassRoomsForm.is_valid():
                     addClassRoomsForm.save()
@@ -100,7 +102,7 @@ def index(request):
                         
             
 
-        context = {'form':form,'passwordForm':passwordForm,'group':group,'days':days, 'hours':hours}
+        context = {'form':form,'passwordForm':passwordForm,'group':group,'days':days, 'hours':hours, 'tab':tab}
         if group == 'Teacher':
             context['scheduleClassForm'] = ScheduleClassForm()
             context['addSubjectsForm'] = addSubjectsForm

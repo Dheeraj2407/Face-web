@@ -54,7 +54,7 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active tab" id="yourTab">Your Classes</a>
+                <a class="nav-link tab" id="yourTab">Your Classes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link tab" id="subTab">Subjects</a>
@@ -64,14 +64,14 @@
             </li>
         </ul>
 
-            <div id='yourClasses' class='visibleTabs'>
+            <div id='yourClasses' class='hiddenTabs'>
             <br/>
             <h5>Engage Classes</h5>
             <form action="{% url 'faceapp:index'%}" method="POST" id='engageForm'>
                 {% csrf_token %}
                 {% bootstrap_form engageClassesForm layout="horizontal" %}
                 <button name="submit" class='btn btn-primary'>Engage Class</button>
-                <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                <input type='hidden' name='tab' value="1"/>
                 <button class='btn btn-danger' id='disengageClass'>Disengage Class</button>
             </form>
             <br/>
@@ -97,6 +97,7 @@
                     <input type="hidden" name='classRoom' value=1 />
                     <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
                     <button class='btn btn-danger' id='unscheduleClass'>Unschedule</button>
+                    <input type='hidden' name='tab' value="1"/>
                 </form>
                 <small id="scheduleError"></small>
                 <div id='res'></div>
@@ -110,9 +111,10 @@
             <form action="{% url 'faceapp:index'%}" method="POST">
                 {% csrf_token %}
                 {% render_field addSubjectsForm.name placeholder="Subject" %}
-                {{ addClassRoomsForm.name.errors }}
+                {{ addSubjectsForm.name.errors }}
                 <button name="submit" id='add' class='btn btn-primary'>Add Subject</button>
                 <input type='hidden' name='addSubject' id='addSubject' value='1' />
+                <input type='hidden' name='tab' value='2' />
                 <button id='removeSubject' class='btn btn-danger'>Remove Subject</button>
             </form>
             {% if subjects|length == 0 %}
@@ -136,6 +138,7 @@
                     {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
                     <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
                     <input type='hidden' name='addClass'/>
+                    <input type='hidden' name='tab' value="3"/>
                 </form>
                 {% if classRooms|length == 0 %}
                 No Class Rooms.
@@ -200,7 +203,6 @@
     {% endif %}
 {% if group == 'Teacher' %}
 <script>
-window.onload=fetchTimeTable({{ distinctClasses.0.classRoom }})
 
 $("#scheduleClass").click(function(event){
     event.preventDefault();
@@ -306,22 +308,49 @@ $("#add").click(function(event){
 });
 
 $("#yourTab").click(function(){
+    $("#yourTab").attr('class','nav-link active tab');
+    $("#subTab").attr('class','nav-link tab');
+    $("#roomTab").attr('class','nav-link tab');
     $("#yourClasses").attr('class','visibleTabs');
     $("#subjects").attr('class','hiddenTabs');
     $("#classRooms").attr('class','hiddenTabs');    
 });
 
 $("#subTab").click(function(){
+    $("#subTab").attr('class','nav-link active tab');
+    $("#roomTab").attr('class','nav-link tab');
+    $("#yourTab").attr('class','nav-link tab');
     $("#yourClasses").attr('class','hiddenTabs');
     $("#subjects").attr('class','visibleTabs');
     $("#classRooms").attr('class','hiddenTabs');    
 });
 
 $("#roomTab").click(function(){
+    $("#roomTab").attr('class','nav-link active tab');
+    $("#subTab").attr('class','nav-link tab');
+    $("#yourTab").attr('class','nav-link tab');
     $("#yourClasses").attr('class','hiddenTabs');
     $("#subjects").attr('class','hiddenTabs');
     $("#classRooms").attr('class','visibleTabs');    
 });
+
+window.onload= function(){
+    if({{tab}}=='1'){
+        $("#yourTab").attr('class','nav-link active tab');
+        $("#yourClasses").attr('class','visibleTabs');
+    }
+    else if({{tab}}=='2'){
+       $("#subTab").attr('class','nav-link active tab');
+       $("#subjects").attr('class','visibleTabs'); 
+    }
+    else if({{tab}}=='3'){
+        $("#roomTab").attr('class','nav-link active tab');
+        $("#classRooms").attr('class','visibleTabs');    
+    }
+        
+    if({{distinctClasses|length}}!=0)
+        fetchTimeTable({{ distinctClasses.0.classRoom }});
+}
 </script>
 {% endif %}
 
