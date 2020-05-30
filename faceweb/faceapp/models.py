@@ -32,8 +32,16 @@ class StudentClass(models.Model):
 class AttendanceLogs(models.Model):
     student = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
     teacher = models.ForeignKey(TeacherClass, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
+
+    def save(self):
+        res = TeacherClass.objects.filter(user=self.teacher, classRoom=self.classRoom)
+        if len(res)>0:
+            self.subject = res[0].subject
+        super(AttendanceLogs,self).save()
 
 class TimeTable(models.Model):
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
