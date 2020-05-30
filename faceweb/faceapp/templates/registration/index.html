@@ -2,25 +2,6 @@
 {% load static %}
 {% load bootstrap4 %}
 {% load widget_tweaks %}
-{% block page_head %}
-<style>
-.hiddenTabs {
-    display : none;
-}
-.visibleTabs {
-    display : block;
-}
-.tab{
-    cursor : pointer;
-}
-ul.errorlist{
-    list-style-type : none;
-    color : red;
-}
-</style>
-
-{% endblock page_head %}
-
 {% block page_header %}
 <div class="body_1">
     {% if user.is_authenticated %}
@@ -41,151 +22,197 @@ ul.errorlist{
 
     {% if user.is_authenticated %}
     
-    <h4>What do you wish to do?</h4>
-
+    <div class="alert alert-warning" role="alert">
+        Time Table Can be Changed in <b>Actions</b> Tab.
+    </div>
+    <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingOne">
         <h5 class="mb-0">
             <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Actions
+                <i class="fas fa-caret-right"></i><b> Actions</b>
             </button>
         </h5>
         </div>
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body"> 
 
-        {% if group == 'Teacher' %}
+            <div class="container">
 
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link tab" id="yourTab">Your Classes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link tab" id="subTab">Subjects</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link tab" id="roomTab">Class Room</a>
-                </li>
-            </ul>
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                  <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="fas fa-marker"></i>&nbsp; Assign Classes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fas fa-book-medical"></i>&nbsp; Add Subjects</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="fas fa-plus-square"></i>&nbsp; Add Classroom</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="container">
+                      <hr>
+                    
+                        <div class="alert alert-primary" role="alert">
+                            <i class="fas fa-angle-double-right"></i> Provide the Class details below.
+                          </div>  
+                        
+                        </p>
+                      <div class="row">
+                        <div class="col-md-5">
+                            <div class="input-group mb-3">
+                                {% if group == 'Teacher' %}
 
-            <div id='yourClasses' class='hiddenTabs'>
-            <br/>
-            <h5>Engage Classes</h5>
-            <form action="{% url 'faceapp:index'%}" method="POST" id='engageForm'>
-                {% csrf_token %}
-                {% bootstrap_form engageClassesForm layout="horizontal" %}
-                <button name="submit" class='btn btn-primary'>Engage Class</button>
-                <input type='hidden' name='tab' value="1"/>
-                <button class='btn btn-danger' id='disengageClass'>Disengage Class</button>
-            </form>
-            <br/>
-            <h5>Available Classes</h5>
+                                <h5>Engage Classes</h5>
+                                <div class='yourClasses'>
+                                <form action="{% url 'faceapp:index'%}" method="POST" id='engageForm'>
+                       
+                                    {% csrf_token %}
+                                
+                                    {% bootstrap_form engageClassesForm layout="horizontal" %}
+                                    <br>
+                                    <button name="submit" class='btn btn-md btn-info'><i class="fas fa-plus-square"></i>&nbsp;Engage Class</button>
+                                    <input type='hidden' name='next' value="{% url 'faceapp:index' %}"/>
+                                    <button class='btn btn-secondary' id='disengageClass'><i class="fas fa-window-close"></i>&nbsp;Disengage Class</button>
+                                </form>
+                                <hr>
+                                <h5>Available Classes</h5>
+                                
+                                {% if classes|length == 0 %}
+                                <h6>No Classes.</h6>
+                                {% else %}
+                                <select class="custom-select" id='room inputGroupSelect01'>
+                                {% for class in distinctClasses %}
+                                    <option>{{class.classRoom}}</option>
+                                {% endfor %}
+                                </select>
+                                <hr>
+                                    <div id="timeTable">
+                                        <span id='roomNo'></span>
+                                       <hr>
+                                        <table id="timeTableDisplay" class='table table-bordered'>
+                    
+                                        </table>
+                                        <hr>
+                                       
+                                           
+                                    <h5>Schedule Classes</h5>
+                                    <form id='schedule' method="POST" action="{% url 'faceapp:scheduleClass' %}">
+                                        {% csrf_token %}
+                                        {{ scheduleClassForm }}
+                                        <input type="hidden" name='classRoom' value=1 />
+                                        <br>
+                                        <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
+                                        <button class='btn btn-danger' id='unscheduleClass'>Unschedule</button>
+                                    </form>
+  
+                             
+                                    <small id="scheduleError"></small>
+                                    <div id='res'></div>
+                                    </div>
+                                {% endif %}
+                                </div>
+
+                            </div>       
+                        </div>
+          
+                      </div>
+                      
+          
+          
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="container">
+                        <hr>
+                        <h5><i class="fas fa-book-medical"></i>&nbsp; Add Subjects</h5>
+
+            
+
+            
+                        
+
+                        <div class="subjects">
+                        <form action="{% url 'faceapp:index'%}" method="POST">
+                            
+                            {% csrf_token %}
+                            {% render_field addSubjectsForm.name placeholder="Subject" %}
+                            {{ addClassRoomsForm.name.errors }}
+                            <button name="submit" id='add' class='btn btn-info'>Add Subject</button>
+                            <input type='hidden' name='addSubject' id='addSubject' value='1' />
+                            <button id='removeSubject' class='btn btn-danger'>Remove Subject</button>
+                        </form>
+                        {% if subjects|length == 0 %}
+                        No Subjects.
+                        {% else %}
+                    
+                        <table>
+                        <th>Subjects</th>
+                        {% for subject in subjects %}
+                            <tr><td><a>{{subject}}</a></td></tr>
+                        {% endfor %}
+                        </table>
+                    </div>
+                        {% endif %}
+                        </div>
+            
+                       </div> 
+
              
-            {% if classes|length == 0 %}
-            <h6>No Classes.</h6>
-            {% else %}
-            <select id='room'>
-            {% for class in distinctClasses %}
-                <option>{{class.classRoom}}</option>
-            {% endfor %}
-            </select>
-                <div id="timeTable">
-                    <span id='roomNo'></span>
-                    <table id="timeTableDisplay" class='table table-bordered'>
+                   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <div class="col-md-5"> 
+                            <hr>
+                            <h5><i class="fas fa-plus-square"></i>&nbsp;Add Classroom</h5>
+                            <div class="classRooms">
+                            <form action="{% url 'faceapp:index'%}" method="POST">
+                                {% csrf_token %}
+                                {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
+                                <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
+                                <input type='hidden' name='addClass'/>
+                            </form>
+                            {% if classRooms|length == 0 %}
+                            No Class Rooms.
+                            {% else %}
+                            <table>
+                            <th>ClassRooms</th>
+                            {% for classRoom in classRooms %}
+                               <tr><td><a>{{classRoom}}</a></td></tr>
+                            {% endfor %}
+                            </table>
+                            {% endif %}
+                            </div>
 
-                    </table>
-                <h5>Schedule Classes</h5>
-                <form id='schedule' method="POST" action="{% url 'faceapp:scheduleClass' %}">
-                    {% csrf_token %}
-                    {{ scheduleClassForm }}
-                    <input type="hidden" name='classRoom' value=1 />
-                    <button class='btn btn-primary' id='scheduleClass'>Schedule</button>
-                    <button class='btn btn-danger' id='unscheduleClass'>Unschedule</button>
-                    <input type='hidden' name='tab' value="1"/>
-                </form>
-                <small id="scheduleError"></small>
-                <div id='res'></div>
+          </div>
+                        </div>
+                  </div>
+                  <div>
+                    
+                  </div>
                 </div>
-            {% endif %}
-            </div>
-
-            <div id="subjects" class='hiddenTabs'>
-            <br/>
-            <h5>Add Subjects</h5>
-            <form action="{% url 'faceapp:index'%}" method="POST">
-                {% csrf_token %}
-                {% render_field addSubjectsForm.name placeholder="Subject" %}
-                {% render_field addSubjectsForm.name.errors %}
-                <button name="submit" id='add' class='btn btn-primary'>Add Subject</button>
-                <input type='hidden' name='addSubject' id='addSubject' value='1' />
-                <input type='hidden' name='tab' value='2' />
-                <button id='removeSubject' class='btn btn-danger'>Remove Subject</button>
-            </form>
-            {% if subjects|length == 0 %}
-            No Subjects.
-            {% else %}
-            <table>
-            <th>Subjects</th>
-            {% for subject in subjects %}
-                <tr><td><a>{{subject}}</a></td></tr>
-            {% endfor %}
-            </table>
-            {% endif %}
-            </div>
-            
-            
-            <div id="classRooms" class='hiddenTabs'>
-                <br/>
-                <h5>Add ClassRooms</h5>
-                <form action="{% url 'faceapp:index'%}" method="POST">
-                    {% csrf_token %}
-                    {% render_field addClassRoomsForm.classRoom placeholder='Class Room' %}
-                    {% render_field addClassRoomsForm.classRoom.errors %}
-                    <button name="submit" class='btn btn-primary'>Add ClassRoom</button>
-                    <input type='hidden' id="addClass" name='addClass' value="1" />
-                    <button class='btn btn-danger' id='removeClass'>Remove ClassRoom</button>
-                    <input type='hidden' name='tab' value="3"/>
-                </form>
-                {% if classRooms|length == 0 %}
-                No Class Rooms.
-                {% else %}
-                <table>
-                    <th>ClassRooms</th>
-                    {% for classRoom in classRooms %}
-                    <tr><td><a>{{classRoom}}</a></td></tr>
-                    {% endfor %}
-                </table>
-                {% endif %}
-            </div>
 
 
-            
+
+
+
         {% elif group == 'Student' %}
 
-
-
         {% endif %}
-    
-    
-    
-    
+        </div>
+        </div>
     </div>
-
-</div>
-</div>
-
-
-
     <div class="card">
         <div class="card-header" id="headingTwo">
         <h5 class="mb-0">
             <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Your Profile
+                <i class="fas fa-user-circle"></i>&nbsp;<b>My Profile</b>
             </button>
         </h5>
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
         <div class="card-body">
+            <div class="col-md-7">
             <form method='post' action="{% url 'faceapp:index' %}">
                 {% csrf_token %}
                 <div class="form-group is-valid row">
@@ -195,30 +222,29 @@ ul.errorlist{
                     </div>
                 </div>
                 {% bootstrap_form form layout='horizontal' %}
-                <button name="submit" class='btn btn-primary'>Update</button>
+                <button name="submit" class='btn btn-info'>Update</button>
             </form>
         </div>
         </div>
+        </div>
     </div>
-
-
-
-
     <div class="card">
         <div class="card-header" id="headingThree">
         <h5 class="mb-0">
             <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Change Password
+                <i class="fas fa-unlock-alt"></i>&nbsp;<b>Change Password</b>
             </button>
         </h5>
         </div>
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
         <div class="card-body">
+            <div class="col-md-7">
             <form method='post' action="{% url 'faceapp:index' %}">
                 {% csrf_token %}
                 {% bootstrap_form passwordForm layout='horizontal' %}
                 <button name="submit" class='btn btn-primary'>Change</button>
             </form>
+        </div>
         </div>
     </div>
     
@@ -228,6 +254,7 @@ ul.errorlist{
     {% endif %}
 {% if group == 'Teacher' %}
 <script>
+window.onload=fetchTimeTable({{ distinctClasses.0.classRoom }})
 
 $("#scheduleClass").click(function(event){
     event.preventDefault();
@@ -300,7 +327,7 @@ function fetchTimeTable(classRoom){
                     {% for day in days %}
                     <tr><th>{{ day }}</th>
                         {% for hour in hours %}
-                            <td>-----</td>
+                            <td>Blank</td>
                         {% endfor %}
                     </tr>
                     {% endfor %} ` ;
@@ -332,53 +359,6 @@ $("#add").click(function(event){
     $("#addSubject").val('1');
 });
 
-$("#yourTab").click(function(){
-    $("#yourTab").attr('class','nav-link active tab');
-    $("#subTab").attr('class','nav-link tab');
-    $("#roomTab").attr('class','nav-link tab');
-    $("#yourClasses").attr('class','visibleTabs');
-    $("#subjects").attr('class','hiddenTabs');
-    $("#classRooms").attr('class','hiddenTabs');    
-});
-
-$("#subTab").click(function(){
-    $("#subTab").attr('class','nav-link active tab');
-    $("#roomTab").attr('class','nav-link tab');
-    $("#yourTab").attr('class','nav-link tab');
-    $("#yourClasses").attr('class','hiddenTabs');
-    $("#subjects").attr('class','visibleTabs');
-    $("#classRooms").attr('class','hiddenTabs');    
-});
-
-$("#roomTab").click(function(){
-    $("#roomTab").attr('class','nav-link active tab');
-    $("#subTab").attr('class','nav-link tab');
-    $("#yourTab").attr('class','nav-link tab');
-    $("#yourClasses").attr('class','hiddenTabs');
-    $("#subjects").attr('class','hiddenTabs');
-    $("#classRooms").attr('class','visibleTabs');    
-});
-
-window.onload= function(){
-    if({{tab}}=='1'){
-        $("#yourTab").attr('class','nav-link active tab');
-        $("#yourClasses").attr('class','visibleTabs');
-    }
-    else if({{tab}}=='2'){
-       $("#subTab").attr('class','nav-link active tab');
-       $("#subjects").attr('class','visibleTabs'); 
-    }
-    else if({{tab}}=='3'){
-        $("#roomTab").attr('class','nav-link active tab');
-        $("#classRooms").attr('class','visibleTabs');    
-    }
-        
-    if({{distinctClasses|length}}!=0)
-        fetchTimeTable({{ distinctClasses.0.classRoom }});
-}
-$("#removeClass").click(function(){
-    $("#addClass").val('0');
-});
 </script>
 {% endif %}
 
