@@ -36,8 +36,7 @@ class AttendanceLogs(models.Model):
     teacher = models.ForeignKey(TeacherClass, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    time = models.TimeField(auto_now_add=True)
+    date_time = models.DateTimeField(auto_now_add=True)
 
     def save(self):
         res = TeacherClass.objects.filter(user=self.teacher, classRoom=self.classRoom)
