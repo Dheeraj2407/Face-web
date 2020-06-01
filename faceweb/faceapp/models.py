@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 # Create your models here.
 
 class Subject(models.Model):
@@ -23,7 +24,7 @@ class TeacherClass(models.Model):
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE, to_field='classRoom')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, to_field='name')
     no_of_classes = models.IntegerField(default=0)
-    last_class = models.DateTimeField(auto_now_add=True)
+    last_class = models.IntegerField(default=0)
     class Meta:
         unique_together = (('user', 'classRoom', 'subject'))
 
@@ -36,17 +37,22 @@ class AttendanceLogs(models.Model):
     teacher = models.ForeignKey(TeacherClass, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-    date_time = models.DateTimeField(auto_now_add=True)
+    day = models.CharField(default='',max_length=3)
+    hour = models.IntegerField(default=0)
 
     def save(self):
-        res = TeacherClass.objects.filter(user=self.teacher, classRoom=self.classRoom)
+        self.day = datetime.today().strftime("%A")[:3]
+        res = TimeTable.objects.filter(ClassRoom=self.classRoom, day=self.day, hour=self.hour)
         if len(res)>0:
-            self.subject = res[0].subject
+            self.teacher = res[0].teacher
+            res = TeacherClass.objects.filter(user=self.teacher, classRoom=self.classRoom)
+            if len(res)>0:
+                self.subject = res[0].subject
         super(AttendanceLogs,self).save()
 
 class TimeTable(models.Model):
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
-    day = models.CharField(max_length=50, default='')
+    day = models.CharField(max_length=3, default='')
     hour = models.IntegerField(default=0)
     teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, default='')
     class Meta:
