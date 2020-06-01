@@ -22,6 +22,8 @@ class TeacherClass(models.Model):
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, to_field='user')
     classRoom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE, to_field='classRoom')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, to_field='name')
+    no_of_classes = models.IntegerField(default=0)
+    last_class = models.DateTimeField(auto_now=True)
     class Meta:
         unique_together = (('user', 'classRoom', 'subject'))
 
