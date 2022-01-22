@@ -26,4 +26,21 @@ and place the extracted weights file in "model-weights" folder.
 ## Execution
 
 To execute the project change directory to "faceweb" and execute this command
-"python manage.py runserver"
+`python manage.py runserver`
+
+
+## Running as docker container
+1. Build the image 
+```
+docker build -f DockerFile -t faceapp
+```
+
+2. Create container
+```
+docker create -p 3000:3000 faceapp
+```
+
+3. Start container
+```
+docker start <container_id>
+```
