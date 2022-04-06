@@ -6,6 +6,11 @@ name: Python application
 on: [ push ]
 env:
   GITHUB_TOKEN: ${{ github.token }}
+
+permissions:
+  id-token: write
+  contents: read    
+
 jobs:
   build:
 
