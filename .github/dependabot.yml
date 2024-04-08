@@ -8,4 +8,4 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/faceweb/requirements.txt" # Location of package manifests
     schedule:
-      interval: "yearly"
+      interval: "monthly"
