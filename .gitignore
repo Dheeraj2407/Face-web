@@ -1,8 +1,9 @@
 faceweb/model-weights/*.weights
-.vscode/
+.vscode/**
 faceweb/sent_emails/*
 faceweb/face-app/
 faceweb/faceweb/__pycache__
 faceweb/faceapp/__pycache__
 faceweb/faceapp/migrations
-faceweb/db.sqlite3
+**/**.sqlite3
+**/**.pickle
